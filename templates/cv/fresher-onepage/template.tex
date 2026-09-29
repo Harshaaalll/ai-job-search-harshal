@@ -2,9 +2,11 @@
 %% Mirrors the layout of the candidate's existing resume: centred header, ruled section
 %% headings, bold "Title - Organisation" lines with right-aligned dates, tight bullets.
 %% Compile with lualatex (see TEMPLATE.md for the exact command). Page limit: exactly 1.
+%% Content rules (bullet counts, 100-110 chars, unique verbs, project pool): RESUME_RULES.md,
+%% enforced by tools/check_resume.py.
 
-\documentclass[11pt,a4paper]{article}
-\usepackage[a4paper,left=0.45in,right=0.45in,top=0.4in,bottom=0.4in]{geometry}
+\documentclass[10pt,a4paper]{article}
+\usepackage[a4paper,left=0.5in,right=0.5in,top=0.4in,bottom=0.4in]{geometry}
 % pdflatex fallback only: keep accented letters composed in the text layer (ATS).
 \usepackage{iftex}
 \ifpdftex\usepackage[T1]{fontenc}\usepackage{lmodern}\fi
@@ -20,17 +22,23 @@
 
 % Section headings: large regular weight with a full-width rule underneath.
 \titleformat{\section}{\large}{}{0em}{}[\titlerule]
-\titlespacing*{\section}{0pt}{5pt}{3pt}
+\titlespacing*{\section}{0pt}{6pt}{3pt}
 
 % Tight bullets.
 \setlist[itemize]{leftmargin=1.1em, label=\textbullet, itemsep=0pt, parsep=0pt, topsep=1pt, partopsep=0pt}
 
 % \entry{Bold title - Organisation}{Dates}  (dates: ASCII hyphen, e.g. "Aug 2026 - Present")
 \newcommand{\entry}[2]{\textbf{#1}\hspace{1em}\hfill #2\par}
-% \project{Bold project name - subtitle}{Dates}
+% \project{Bold project name --- role-relevant subtitle}{Dates}
 \newcommand{\project}[2]{\textbf{#1}\hspace{1em}\hfill #2\par}
 % \skillrow{Label}{comma-separated skills}
-\newcommand{\skillrow}[2]{\textbf{#1:} #2\par}
+\newcommand{\skillrow}[2]{{\raggedright\textbf{#1:} #2\par}}
+% \entrygap - vertical gap between consecutive work entries and between projects.
+% Tune only this length (3-5pt) to make the page end near the bottom margin.
+\newlength{\entrygapsize}\setlength{\entrygapsize}{6pt}
+\newcommand{\entrygap}{\vspace{\entrygapsize}}
+% \eduentry{Degree}{Institution (years)} - guaranteed 2em gap before the institution.
+\newcommand{\eduentry}[2]{\textbf{#1}\hspace{2em}\hfill\textbf{#2}\par}
 
 \begin{document}
 
@@ -38,14 +46,13 @@
 \begin{center}
   {\LARGE\bfseries [YOUR_NAME]}\\[3pt]
   [YOUR_EMAIL] \quad [YOUR_PHONE] \quad [YOUR_CITY]\\[1pt]
-  \href{[YOUR_LINKEDIN_URL]}{[YOUR_LINKEDIN_URL]} \quad \href{[YOUR_GITHUB_URL]}{[YOUR_GITHUB_DISPLAY]}\\[1pt]
-  \href{[YOUR_PORTFOLIO_URL]}{Portfolio: [YOUR_PORTFOLIO_DISPLAY]}
+  \href{[YOUR_LINKEDIN_URL]}{[YOUR_LINKEDIN_URL]} \quad \href{[YOUR_GITHUB_URL]}{[YOUR_GITHUB_DISPLAY]} \quad \href{[YOUR_PORTFOLIO_URL]}{Portfolio: [YOUR_PORTFOLIO_DISPLAY]}
 \end{center}
 \vspace{-6pt}
 
 %% ---------------- Professional Summary ----------------
 \section{Professional Summary}
-[PROFILE_STATEMENT - 3-4 lines, tailored to the posting; last sentence names the company/team.]
+[PROFILE_STATEMENT - 3-4 sentences, no pronouns; identity + evidence + role/company-specific differentiator.]
 
 %% ---------------- Skills ----------------
 \section{Skills}
@@ -60,9 +67,8 @@
 \begin{itemize}
   \item {[ACHIEVEMENT_1A]}
   \item {[ACHIEVEMENT_1B]}
-  \item {[ACHIEVEMENT_1C]}
 \end{itemize}
-\vspace{2pt}
+\entrygap
 \entry{[JOB_TITLE_2] - [COMPANY_2]}{[START_2] - [END_2]}
 \begin{itemize}
   \item {[ACHIEVEMENT_2A]}
@@ -75,11 +81,26 @@
 \begin{itemize}
   \item {[PROJECT_1_BULLET_A]}
   \item {[PROJECT_1_BULLET_B]}
+  \item {[PROJECT_1_BULLET_C]}
+\end{itemize}
+\entrygap
+\project{[PROJECT_2] --- [PROJECT_2_SUBTITLE]}{[PROJECT_2_DATE]}
+\begin{itemize}
+  \item {[PROJECT_2_BULLET_A]}
+  \item {[PROJECT_2_BULLET_B]}
+  \item {[PROJECT_2_BULLET_C]}
 \end{itemize}
 
 %% ---------------- Education ----------------
 \section{Education}
-\entry{[DEGREE], [FIELD]}{\textbf{[INSTITUTION] ([YEAR_START]-[YEAR_END])}}
-\textit{CBSE:} Class 12 - [CLASS_12_SCORE] \quad --- \quad Class 10 - [CLASS_10_SCORE]
+\eduentry{[DEGREE], [FIELD]}{[INSTITUTION] ([YEAR_START]-[YEAR_END])}
+\textit{Coursework:} [COURSEWORK] \hspace{2em}\hfill \textit{CBSE:} XII [CLASS_12_SCORE], X [CLASS_10_SCORE]
+
+%% ---------------- Sports and Leadership (only if it fits on the page) ----------------
+\section{Sports and Leadership}
+\begin{itemize}
+  \item {[SPORTS_LINE]}
+  \item {[LEADERSHIP_LINE]}
+\end{itemize}
 
 \end{document}

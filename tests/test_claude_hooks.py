@@ -83,13 +83,16 @@ class PdfGateTests(unittest.TestCase):
             os.utime(pdf, (t + 1, t + 1))
 
     @staticmethod
-    def fake_run(pages_rc=0, layout_rc=0, layout_out="layout: clean"):
+    def fake_run(pages_rc=0, layout_rc=0, layout_out="layout: clean", resume_rc=0):
         calls = []
 
         def run(cmd, **kw):
             calls.append(cmd)
             if "verify_pdf.py" in cmd[1]:
                 return types.SimpleNamespace(returncode=pages_rc, stdout="", stderr="expected 1 page(s), found 2")
+            if "check_resume.py" in cmd[1]:
+                out = "FAIL: 94 chars (rule 100-110): Short bullet.\ncheck_resume: FAILED" if resume_rc else "check_resume: OK"
+                return types.SimpleNamespace(returncode=resume_rc, stdout=out, stderr="")
             return types.SimpleNamespace(returncode=layout_rc, stdout=layout_out, stderr="")
         run.calls = calls
         return run
@@ -120,6 +123,14 @@ class PdfGateTests(unittest.TestCase):
         out = "LAYOUT PROBLEMS:\n  - p1 has a 140pt hole at y300\n"
         fails = self.g.check(self.root, time.time(), self.fake_run(layout_rc=1, layout_out=out))
         self.assertTrue(any("hole" in f for f in fails))
+
+    def test_resume_rule_failure_blocks_cv(self):
+        self.draft("main_acme_ml")
+        (self.root / "tools").mkdir()
+        (self.root / "tools" / "check_resume.py").write_text("")
+        fails = self.g.check(self.root, time.time(), self.fake_run(resume_rc=1))
+        self.assertTrue(any("resume rules" in f and "94 chars" in f for f in fails))
+        self.assertEqual(self.g.check(self.root, time.time(), self.fake_run()), [])
 
     def test_old_drafts_and_example_ignored(self):
         self.draft("main_old_role", with_pdf=False, age=5 * 3600)

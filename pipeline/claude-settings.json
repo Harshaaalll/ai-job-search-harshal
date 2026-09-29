@@ -47,6 +47,8 @@
       "Bash(python3 tools/verify_layout.py:*)",
       "Bash(python3 ../tools/verify_pdf.py:*)",
       "Bash(python3 ../tools/verify_layout.py:*)",
+      "Bash(python3 tools/check_resume.py:*)",
+      "Bash(python tools/check_resume.py:*)",
       "Bash(python tools/verify_pdf.py:*)",
       "Bash(python tools/verify_layout.py:*)",
       "Bash(python3 /home/harshal/linkedin/ai-job-search/tools/verify_pdf.py:*)",

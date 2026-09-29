@@ -67,6 +67,11 @@ def check(repo: Path, now: float, run=subprocess.run) -> list:
                 cwd=repo, capture_output=True, text=True)
         if r.returncode != 0:
             fails.append(f"{pdf.name}: must be exactly {pages} page(s): {(r.stdout + r.stderr).strip()[-200:]}")
+        if is_cv and (repo / "tools" / "check_resume.py").exists():
+            r = run(["python3", "tools/check_resume.py", str(tex)], cwd=repo, capture_output=True, text=True)
+            if r.returncode != 0:
+                bad = [ln[6:] for ln in r.stdout.splitlines() if ln.startswith("FAIL: ")]
+                fails.append(f"{tex.name}: resume rules - " + "; ".join(bad)[:400])
         r = run(["python3", "tools/verify_layout.py", str(pdf)], cwd=repo, capture_output=True, text=True)
         if r.returncode == 1:  # 2 = tooling unavailable, never a layout verdict
             problems = layout_problems(r.stdout)
