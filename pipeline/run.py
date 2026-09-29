@@ -286,13 +286,22 @@ def clean_draft_pdfs(entry):
              or norm(r.get("company")) == norm(entry.get("company")))]
     if not rows:
         return "doc_privacy skipped: no drafted tracker row"
+    notes = []
+    cv_tex = REPO / rows[-1]["cv_file"] if rows[-1].get("cv_file") else None
+    if cv_tex and cv_tex.suffix == ".tex" and cv_tex.exists() and "\\entrygapsize" in cv_tex.read_text(encoding="utf-8"):
+        f = subprocess.run(["python3", "tools/fill_page.py", str(cv_tex)], cwd=REPO,
+                           capture_output=True, text=True, timeout=300)
+        if f.returncode != 0:
+            notes.append(f"fill_page failed: {(f.stdout + f.stderr).strip()[-150:]}")
     pdfs = [str(REPO / Path(f).with_suffix(".pdf")) for f in (rows[-1].get("cv_file"), rows[-1].get("cover_letter_file")) if f]
     pdfs = [p for p in pdfs if Path(p).exists()]
     if not pdfs:
         return "doc_privacy skipped: PDFs not found"
     p = subprocess.run([str(PRIVACY_PY), "tools/doc_privacy.py", "clean", "--in-place", *pdfs],
                        cwd=REPO, capture_output=True, text=True, timeout=120)
-    return "" if p.returncode == 0 else f"doc_privacy failed: {(p.stderr or p.stdout).strip()[-150:]}"
+    if p.returncode != 0:
+        notes.append(f"doc_privacy failed: {(p.stderr or p.stdout).strip()[-150:]}")
+    return "; ".join(notes)
 
 
 def stage_draft(cfg, status, picked, dry_run):

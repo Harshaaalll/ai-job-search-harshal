@@ -21,7 +21,8 @@
 - Section headings: `\section{...}`, rendered large regular weight with a full-width rule (titlesec). No numbering.
 - Experience and project headers use `\entry{Title - Organisation}{Dates}` / `\project{Name --- subtitle}{Dates}`: bold left, date right-aligned. Dates use an ASCII hyphen with spaces: `Aug 2026 - Present`, `2022-2026` (see "Date fields must be ASCII ranges" in `05-cv-templates.md`).
 - Skills: 4 `\skillrow{Label}{...}` lines. Reorder categories and items so the posting's exact terms come first.
-- Bullets: exactly one line each (100-110 characters fits one line at 10pt). Vertical gaps: `\entrygap` between consecutive work entries and between projects; tune only `\entrygapsize` (default 6pt; 3-7pt) to fill the page.
+- Bullets: exactly one line each (100-110 characters fits one line at 10pt). Vertical gaps: `\entrygap` between consecutive work entries and between projects, `\sectiongapsize` above each section.
+- **Fill the page:** after `check_resume.py` passes, run `python3 tools/fill_page.py cv/<file>.tex`. It compiles, measures where the text ends and spreads the leftover space over `\entrygapsize` / `\sectiongapsize` until the last line sits just above the bottom margin (never 2 pages). Do not hand-tune the gaps.
 - Education: `\eduentry{Degree}{BITS Pilani, Hyderabad (2022-2026)}` (guaranteed gap between degree and institution), then one line with Coursework and CBSE scores. **Do not add CGPA** (candidate decision).
 - Profile summary: 3-4 sentences, no pronouns; ends by naming the target company or team when that reads naturally.
 

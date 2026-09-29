@@ -22,7 +22,8 @@
 
 % Section headings: large regular weight with a full-width rule underneath.
 \titleformat{\section}{\large}{}{0em}{}[\titlerule]
-\titlespacing*{\section}{0pt}{6pt}{3pt}
+\newlength{\sectiongapsize}\setlength{\sectiongapsize}{6pt}
+\titlespacing*{\section}{0pt}{\sectiongapsize}{3pt}
 
 % Tight bullets.
 \setlist[itemize]{leftmargin=1.1em, label=\textbullet, itemsep=0pt, parsep=0pt, topsep=1pt, partopsep=0pt}

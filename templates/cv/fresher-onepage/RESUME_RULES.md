@@ -32,9 +32,10 @@ Mechanical rules are enforced by `python3 tools/check_resume.py <cv.tex>`; run i
 - Work facts never change between versions; only the framing words change per role (master prompt constraint 11).
 
 ## Layout
-- 10pt Latin Modern, one column. `\entrygap` between consecutive work entries and between projects - tune the single
-  `\entrygapsize` length (default 6pt, range 3-7pt) so the page ends near the bottom margin; never shrink the font or margins.
-- Overflow order: drop Sports and Leadership, then shorten summary to 3 sentences, then reduce `\entrygapsize`.
+- 10pt Latin Modern, one column. `\entrygap` between consecutive work entries and between projects.
+- **The page must be filled to the bottom margin**: after the content passes `check_resume.py`, run
+  `python3 tools/fill_page.py <cv.tex>` (adjusts only `\entrygapsize` / `\sectiongapsize`). Never shrink the font or margins.
+- Overflow order: drop Sports and Leadership, then shorten summary to 3 sentences (fill_page then re-spreads the space).
 
 ## Role-specific content notes
 - **OTO Capital** (source of truth: profile, "AI Engineer - OTO Capital"): strongest facts are the deterministic negotiation
