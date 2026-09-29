@@ -14,6 +14,15 @@
     "product-management@synced": false,
     "cowork-plugin-management@synced": false
   },
+  "hooks": {
+    "Stop": [
+      {"hooks": [{"type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/pdf_gate.py\"", "timeout": 120}]}
+    ],
+    "PreToolUse": [
+      {"matcher": "WebFetch|WebSearch",
+       "hooks": [{"type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/egress_guard.py\"", "timeout": 10}]}
+    ]
+  },
   "permissions": {
     "defaultMode": "dontAsk",
     "allow": [
@@ -38,6 +47,23 @@
       "Bash(python3 tools/verify_layout.py:*)",
       "Bash(python3 ../tools/verify_pdf.py:*)",
       "Bash(python3 ../tools/verify_layout.py:*)",
+      "Bash(python tools/verify_pdf.py:*)",
+      "Bash(python tools/verify_layout.py:*)",
+      "Bash(python3 /home/harshal/linkedin/ai-job-search/tools/verify_pdf.py:*)",
+      "Bash(python3 /home/harshal/linkedin/ai-job-search/tools/verify_layout.py:*)",
+      "Bash(python /home/harshal/linkedin/ai-job-search/tools/verify_pdf.py:*)",
+      "Bash(python /home/harshal/linkedin/ai-job-search/tools/verify_layout.py:*)",
+      "Bash(cd /home/harshal/linkedin/ai-job-search:*)",
+      "Bash(mkdir -p /home/harshal/linkedin/ai-job-search/cv/build)",
+      "Bash(mkdir -p /home/harshal/linkedin/ai-job-search/cover_letters/build)",
+      "Bash(mv /home/harshal/linkedin/ai-job-search/cv/build/:*)",
+      "Bash(mv /home/harshal/linkedin/ai-job-search/cover_letters/build/:*)",
+      "Bash(rm -f /home/harshal/linkedin/ai-job-search/cv/:*)",
+      "Bash(rm -f /home/harshal/linkedin/ai-job-search/cover_letters/:*)",
+      "Bash(rm -rf /home/harshal/linkedin/ai-job-search/cv/build)",
+      "Bash(rm -rf /home/harshal/linkedin/ai-job-search/cover_letters/build)",
+      "Bash(rm -f cv/:*)",
+      "Bash(rm -f cover_letters/:*)",
       "Bash(cd cv:*)",
       "Bash(cd cover_letters:*)",
       "Bash(cd ..:*)",

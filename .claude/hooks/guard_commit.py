@@ -10,6 +10,15 @@ import shlex
 import sys
 
 
+def is_hookspath_read(args) -> bool:
+    """`git config core.hooksPath` / `git config --get core.hooksPath` only read the value."""
+    if "config" not in args:
+        return False
+    rest = args[args.index("config") + 1:]
+    rest = [a for a in rest if a not in ("--get", "--local", "--global", "--show-origin")]
+    return len(rest) == 1 and rest[0].lower() == "core.hookspath"
+
+
 def reason_to_block(command: str):
     for part in re.split(r"&&|\|\||;|\|", command):
         try:
@@ -20,7 +29,7 @@ def reason_to_block(command: str):
             continue
         i = tokens.index("git")
         args = tokens[i + 1:]
-        if any("hookspath" in a.lower() for a in args):
+        if any("hookspath" in a.lower() for a in args) and not is_hookspath_read(args):
             return "Changing or overriding core.hooksPath would disable the test-gated pre-commit hook."
         # skip global options like -C dir / -c k=v to find the subcommand
         j = 0
