@@ -12,15 +12,32 @@
     "finance@synced": false,
     "design@synced": false,
     "product-management@synced": false,
-    "cowork-plugin-management@synced": false
+    "cowork-plugin-management@synced": false,
+    "playwright@claude-plugins-official": false
   },
   "hooks": {
     "Stop": [
-      {"hooks": [{"type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/pdf_gate.py\"", "timeout": 120}]}
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/pdf_gate.py\"",
+            "timeout": 120
+          }
+        ]
+      }
     ],
     "PreToolUse": [
-      {"matcher": "WebFetch|WebSearch",
-       "hooks": [{"type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/egress_guard.py\"", "timeout": 10}]}
+      {
+        "matcher": "WebFetch|WebSearch",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/egress_guard.py\"",
+            "timeout": 10
+          }
+        ]
+      }
     ]
   },
   "permissions": {

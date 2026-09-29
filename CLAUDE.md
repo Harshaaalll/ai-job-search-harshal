@@ -150,6 +150,7 @@ ATS parsers read the PDF's embedded text layer, not the rendered page. Extract i
 - [ ] CV text layer extracts cleanly - no `(cid:*)` markers, `�` replacement characters, or text visible in the PDF but absent from the extraction
 - [ ] Email and phone appear as **literal text** in the extraction (icon-glyph noise like `MOBILE-ALT`/`Envelope` is harmless, but a contact detail carried only by an icon or hyperlink is invisible to ATS)
 - [ ] Reading order of the extracted text matches the visual order (single-column stock template is safe; multi-column custom templates are where this breaks)
+- [ ] Claims audited: the `claim-auditor` subagent reports `CLEAN` for the CV and cover letter (or every flagged claim is fixed or consciously kept)
 - [ ] Resume rules pass: `python3 tools/check_resume.py cv/main_<company>_<role>.tex` prints OK (bullet counts, 100-110 chars, unique verbs, 3 pool projects, no CGPA - see templates/cv/fresher-onepage/RESUME_RULES.md)
 - [ ] Page filled: `python3 tools/fill_page.py cv/main_<company>_<role>.tex` prints OK (last line just above the bottom margin, still 1 page)
 - [ ] Metadata clean: `~/.local/share/ai-job-search/venv/bin/python tools/doc_privacy.py clean --in-place <cv>.pdf <cover>.pdf` (keeps Title/Author only; the pipeline does this automatically)

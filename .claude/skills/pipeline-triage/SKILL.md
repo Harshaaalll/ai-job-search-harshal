@@ -2,7 +2,7 @@
 name: pipeline-triage
 description: Review the latest daily job-pipeline run - drafts awaiting review, failures with root cause, skips, scrape errors - and propose re-queues. User-invoked only (/pipeline-triage).
 disable-model-invocation: true
-allowed-tools: Read, Glob, Grep, Bash(python3 tools/verify_pdf.py *), Bash(python3 tools/verify_layout.py *)
+allowed-tools: Read, Glob, Grep, Agent, Bash(python3 tools/verify_pdf.py *), Bash(python3 tools/verify_layout.py *), Bash(python3 tools/check_resume.py *)
 ---
 
 # Pipeline triage
@@ -14,8 +14,11 @@ Morning review of what `pipeline/run.py` did. Read-only until the user confirms 
    - **drafted** - find its row in `job_search_tracker.csv` (status `drafted`), then run
      `python3 tools/verify_pdf.py <cv>.pdf --pages <limit>` (limit from the ACTIVE-TEMPLATE block in
      `05-cv-templates.md`; cover letters are 1) and `python3 tools/verify_layout.py <pdf>`.
-     List it under **Ready for your review** with both PDF paths and the posting URL. Remind the user
-     to skim facts before submitting: unattended runs cannot ask about uncertain claims.
+     Run `python3 tools/check_resume.py <cv>.tex`, then start the **claim-auditor** subagent
+     (`subagent_type: claim-auditor`) on the CV and cover letter, all drafted items in parallel.
+     List it under **Ready for your review** with both PDF paths, the posting URL and the auditor's
+     verdict (`CLEAN` or its UNSUPPORTED / CONTRADICTED / EXTERNAL claims). Unattended runs cannot ask
+     about uncertain claims, so every non-CLEAN item needs the user's eyes before submitting.
    - **failed** - open `pipeline/logs/<date>_apply_<n>.json`, find the actual error (fetch failure,
      timeout, compile error, permission denial) and state the root cause in one line.
    - **skipped** - quote the reason (eligibility, score below threshold, gate failure).
