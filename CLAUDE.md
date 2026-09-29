@@ -150,4 +150,5 @@ ATS parsers read the PDF's embedded text layer, not the rendered page. Extract i
 - [ ] CV text layer extracts cleanly - no `(cid:*)` markers, `�` replacement characters, or text visible in the PDF but absent from the extraction
 - [ ] Email and phone appear as **literal text** in the extraction (icon-glyph noise like `MOBILE-ALT`/`Envelope` is harmless, but a contact detail carried only by an icon or hyperlink is invisible to ATS)
 - [ ] Reading order of the extracted text matches the visual order (single-column stock template is safe; multi-column custom templates are where this breaks)
+- [ ] Metadata clean: `~/.local/share/ai-job-search/venv/bin/python tools/doc_privacy.py clean --in-place <cv>.pdf <cover>.pdf` (keeps Title/Author only; the pipeline does this automatically)
 - [ ] Posting keywords covered or honestly absent - synonym-only matches tightened to the posting's exact term where truthfully applicable, keywords the profile genuinely supports added to experience bullets, genuine gaps left visible and **never stuffed**

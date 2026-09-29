@@ -273,6 +273,28 @@ def stage_select(cfg, status):
     return picked
 
 
+PRIVACY_PY = Path.home() / ".local/share/ai-job-search/venv/bin/python"
+
+
+def clean_draft_pdfs(entry):
+    """Strip toolchain metadata from a fresh draft's PDFs (tools/doc_privacy.py). Best-effort:
+    a failure never fails the draft; it is returned as a note."""
+    if not PRIVACY_PY.exists():
+        return "doc_privacy skipped: venv with pikepdf not found"
+    rows = [r for r in tracker_rows() if r.get("status") == "drafted" and
+            ((r.get("source") and url_id(r["source"]) == url_id(entry.get("url")))
+             or norm(r.get("company")) == norm(entry.get("company")))]
+    if not rows:
+        return "doc_privacy skipped: no drafted tracker row"
+    pdfs = [str(REPO / Path(f).with_suffix(".pdf")) for f in (rows[-1].get("cv_file"), rows[-1].get("cover_letter_file")) if f]
+    pdfs = [p for p in pdfs if Path(p).exists()]
+    if not pdfs:
+        return "doc_privacy skipped: PDFs not found"
+    p = subprocess.run([str(PRIVACY_PY), "tools/doc_privacy.py", "clean", "--in-place", *pdfs],
+                       cwd=REPO, capture_output=True, text=True, timeout=120)
+    return "" if p.returncode == 0 else f"doc_privacy failed: {(p.stderr or p.stdout).strip()[-150:]}"
+
+
 def stage_draft(cfg, status, picked, dry_run):
     done = []
     for i, key in enumerate(picked, 1):
@@ -289,6 +311,10 @@ def stage_draft(cfg, status, picked, dry_run):
             # /apply may update an existing open row instead of appending; accept if the company matches
             if not any(norm(r.get("company")) == norm(entry["company"]) for r in tracker_rows()):
                 result, reason = "failed", "reported drafted but no tracker row found"
+        if result == "drafted" and not dry_run:
+            note = clean_draft_pdfs(entry)
+            if note:
+                log(note)
         state = load_json(STATE, {"seen": {}})
         e = state["seen"][key]
         e["pipeline_state"] = "selected" if dry_run else result
