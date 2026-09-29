@@ -1,0 +1,131 @@
+{
+  "_comment": "Daily pipeline config. Edit freely; run.py re-reads it every run.",
+  "drafts_per_day": 5,
+  "min_rank_score_to_draft": 60,
+  "rank_limit_per_day": 20,
+  "draft_timeout_minutes": 45,
+  "rank_timeout_minutes": 40,
+  "model": "",
+  "linkedin": {
+    "jobage": 7,
+    "pause_seconds": 2,
+    "searches": [
+      {
+        "location": "Bengaluru, Karnataka, India",
+        "query": "GenAI Engineer"
+      },
+      {
+        "location": "Bengaluru, Karnataka, India",
+        "query": "AI Engineer"
+      },
+      {
+        "location": "Bengaluru, Karnataka, India",
+        "query": "LLM Engineer"
+      },
+      {
+        "location": "Bengaluru, Karnataka, India",
+        "query": "Agentic AI"
+      },
+      {
+        "location": "Bengaluru, Karnataka, India",
+        "query": "Applied Scientist"
+      },
+      {
+        "location": "Bengaluru, Karnataka, India",
+        "query": "Machine Learning Engineer"
+      },
+      {
+        "location": "Bengaluru, Karnataka, India",
+        "query": "NLP Engineer"
+      },
+      {
+        "location": "Bengaluru, Karnataka, India",
+        "query": "Associate Data Scientist"
+      },
+      {
+        "location": "Bengaluru, Karnataka, India",
+        "query": "Data Scientist"
+      },
+      {
+        "location": "Bengaluru, Karnataka, India",
+        "query": "Software Engineer new grad 2026"
+      },
+      {
+        "location": "India",
+        "query": "LLM Engineer",
+        "remote": "remote"
+      },
+      {
+        "location": "India",
+        "query": "Machine Learning Engineer",
+        "remote": "remote"
+      },
+      {
+        "location": "Hyderabad, Telangana, India",
+        "query": "AI Engineer"
+      },
+      {
+        "location": "Hyderabad, Telangana, India",
+        "query": "Data Scientist"
+      },
+      {
+        "location": "Pune, Maharashtra, India",
+        "query": "Machine Learning Engineer"
+      },
+      {
+        "location": "Gurugram, Haryana, India",
+        "query": "Data Scientist"
+      }
+    ]
+  },
+  "freehire": {
+    "jobage": 7,
+    "searches": [
+      {
+        "query": "LLM",
+        "args": [
+          "--country",
+          "IN",
+          "--category",
+          "ml_ai"
+        ]
+      },
+      {
+        "query": "generative AI",
+        "args": [
+          "--country",
+          "IN"
+        ]
+      },
+      {
+        "query": "machine learning",
+        "args": [
+          "--country",
+          "IN",
+          "--seniority",
+          "junior"
+        ]
+      },
+      {
+        "query": "data scientist",
+        "args": [
+          "--country",
+          "IN"
+        ]
+      },
+      {
+        "query": "AI engineer",
+        "args": [
+          "--country",
+          "IN",
+          "--facet",
+          "salary_min=1000000"
+        ]
+      }
+    ]
+  },
+  "exclude_title_regex": "\\b(senior|sr\\.?|lead|staff|principal|manager|director|head|architect|vp|vice president|avp|intern|internship)\\b|\\b(ii|iii|iv|3|4|5)\\s*$|engineer\\s+(ii|iii|iv)\\b|scientist\\s+(ii|iii|iv)\\b",
+  "allow_title_regex": "software engineer ii",
+  "core_title_regex": "gen\\s?ai|generative|llm|agent|nlp|machine learning|\\bml\\b|\\bai\\b|artificial intelligence|data scien|applied scien",
+  "india_location_regex": "india|bengaluru|bangalore|hyderabad|pune|mumbai|gurugram|gurgaon|noida|delhi|chennai|kolkata|ahmedabad|kochi|trivandrum|thiruvananthapuram|remote|\\bin\\b|karnataka|telangana|maharashtra|haryana|tamil nadu"
+}

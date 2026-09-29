@@ -1,94 +1,100 @@
-# Job Application Assistant for [YOUR_NAME]
+# Job Application Assistant for Harshal Bhambhani
 
-<!-- SETUP: This file is populated by running /setup -->
-<!-- After running /setup, all [PLACEHOLDER] tokens will be replaced with your actual information -->
+<!-- Populated by /setup on 2026-09-28. Full detail lives in .claude/skills/job-application-assistant/01-candidate-profile.md -->
 
 ## Role
-This repo is a job application workspace. Claude acts as a career advisor and application assistant for [YOUR_NAME], helping with:
-1. **Job fit evaluation** - Assess job postings against your profile (skills, experience, behavioral traits)
-2. **CV tailoring** - Adapt existing CV templates (LaTeX/moderncv) to target specific roles
+This repo is a job application workspace. Claude acts as a career advisor and application assistant for Harshal Bhambhani, helping with:
+1. **Job fit evaluation** - Assess job postings against the profile (skills, experience, behavioral traits)
+2. **CV tailoring** - Adapt the active 1-page CV template (`templates/cv/fresher-onepage/`) to target specific roles
 3. **Cover letter writing** - Draft targeted cover letters using existing templates (LaTeX)
 4. **Interview preparation** - Prepare answers, questions, and talking points for interviews
-5. **Career strategy** - Advise on positioning and personal branding
+5. **Career strategy** - Advise on positioning and personal branding for the Indian fresher AI/ML market
 
 ## Candidate Profile
 
-<!-- This section is auto-populated by /setup. You can also fill it in manually. -->
-
 ### Identity
-- **Name:** [YOUR_NAME]
-- **Location:** [YOUR_CITY], [YOUR_COUNTRY] ([YOUR_COMMUTE_CONSTRAINTS])
+- **Name:** Harshal Bhambhani
+- **Location:** Bangalore, Karnataka, India (first priority; open to relocating to Hyderabad, Pune, Gurugram/Delhi NCR, Mumbai, Chennai; not searching abroad)
+- **Contact:** bhambhaniharshal@gmail.com | +91 8561972727 | [LinkedIn](https://www.linkedin.com/in/harshal-bhambhani-hhbb24) | [GitHub](https://github.com/Harshaaalll) | [Portfolio](https://harshaaalll.github.io/)
 - **Languages:**
   | Language | Level |
   |----------|-------|
-  | [LANGUAGE] | [LEVEL] |
-  <!-- Every language you work in professionally, with your level (CEFR, "native," "professional
-  working proficiency," whatever your CV/LinkedIn use - no need to force it into one scale). An
-  undeclared language is a hard deal-breaker if a posting requires it; a declared language at a
-  lower level than a posting wants is flagged for your own judgment, not auto-rejected. See
-  04-job-evaluation.md's Language Gate. -->
-- **CV language:** [YOUR_CV_LANGUAGE] <!-- English unless your market expects otherwise; /setup asks -->
+  | English | Professional working proficiency (fluent) |
+- **CV language:** English
 
-- **Status:** [YOUR_EMPLOYMENT_STATUS]
-- **LinkedIn headline:** "[YOUR_LINKEDIN_HEADLINE]"
+- **Status:** 2026 graduate, BITS Pilani Hyderabad. Employed as AI Engineer at OTO Capital since Aug 2026; searching for fresher / entry-level (0-2 yrs) roles in AI, ML, Data Science, GenAI and AI Agents.
+- **LinkedIn headline:** "AI Engineer | GenAI, LLM Agents & NLP | BITS Pilani '26" *(suggested - confirm against the live LinkedIn profile)*
 
 ### Education
-<!-- List your degrees, most recent first -->
-- **[DEGREE_LEVEL] in [FIELD]** ([YEAR_START]-[YEAR_END]) - [INSTITUTION]
-  - Thesis: "[THESIS_TITLE]"
-  - Topics: [KEY_TOPICS]
+- **B.E. Electrical & Electronics Engineering, Minor in Computer Science** (2022-2026) - BITS Pilani, Hyderabad Campus
+  - Topics: Machine Learning, Statistics & Probability for Analytics, Database Systems, AI, DSA, Operating Systems, OOP
+  - CGPA 6.8/10 - not printed on the CV; see the Academic Cutoff Gate in `04-job-evaluation.md`. Never misstate it on application forms.
+- CBSE Class XII 92.2% (2021), Class X 91.2% (2019)
 
 ### Professional Experience
-<!-- List your roles, most recent first -->
-- **[JOB_TITLE]** ([START_DATE] - [END_DATE]) - **[COMPANY]** ([LOCATION])
-  - [KEY_RESPONSIBILITY_1]
-  - [KEY_RESPONSIBILITY_2]
-  - [KEY_ACHIEVEMENT]
+- **AI Engineer** (Aug 2026 - Present) - **OTO Capital**
+  - Gemini Live agent with tool calling on FastAPI serving 5 regulated clients across 10 languages
+  - Deterministic Python verifier gating 4 LLM tools every turn to stop hallucinated figures
+  - 34-check eval suite with byte-identical control arms gating each production release; 36,091 PostgreSQL records mined into cohort insights that changed product policy
+- **Data & Analytics Consultant** (Jul 2026 - Aug 2026) - **Goel Exports**
+  - Order-to-cash process modelled into a 4-phase Odoo 19 data model; data-quality rules across 6 pipeline stages; CRM automation defects fixed via system logs
+- **Data Science Intern** (Jul 2025 - Dec 2025) - **Standard Chartered Global Business Services** (Bangalore)
+  - Production contract-NLP pipeline on Dataiku DSS cutting audit time 90%; DistilBERT at 98.6% recall on rare clauses; SBERT retrieval; guardrails filtering 95%+ false positives
+- **Machine Learning Engineer Intern** (Jun 2024 - Jul 2024) - **DG Liger Consulting** (Gurgaon)
+  - LangChain RAG assistant over 30+ client PDFs with MiniLM + FAISS and a 3B-parameter LLM
 
 ### Technical Skills
-- **Primary:** [YOUR_PRIMARY_SKILLS]
-- **Secondary:** [YOUR_SECONDARY_SKILLS]
-- **Domain:** [YOUR_DOMAIN_EXPERTISE]
-- **Software:** [YOUR_TOOLS_AND_SOFTWARE]
+- **Primary:** Python, SQL/PostgreSQL, LLMs, prompt engineering, tool calling, agentic AI, RAG, LangChain, LangGraph, FAISS, guardrails, LLM evals, transformer fine-tuning (DistilBERT, SBERT), FastAPI
+- **Secondary:** XGBoost, LightGBM, scikit-learn, SHAP, Pandas, NumPy, OCR (PaddleOCR, OpenCV), NLLB-200, Whisper, dbt, Flask, Streamlit, Power BI
+- **Domain:** Document AI and legal/contract NLP in banking, GenAI in regulated fintech, multilingual NLP, business analytics
+- **Software:** GCP Vertex AI, AWS, Docker, Git, Dataiku DSS, Odoo 19, Neo4j, Vespa
 
 ### Certifications
-<!-- List relevant certifications with dates -->
-- **[CERTIFICATION_NAME]** - [HOURS]h - completed [DATE]
+- None recorded yet.
 
 ### Publications
-<!-- List peer-reviewed publications, if any -->
-- [AUTHOR_LIST] ([YEAR]). [TITLE]. [JOURNAL].
+- None.
 
 ### Awards
-<!-- List relevant awards, hackathons, competitions -->
-- [AWARD_NAME] - [EVENT] ([YEAR])
+- State-level representative in basketball and cricket; volleyball gold medalist; former logistics team captain
 
 ### Behavioral Profile
-<!-- Your behavioral assessment results (PI, DISC, Myers-Briggs, or self-assessment) -->
-- **[TRAIT_1]** - [DESCRIPTION]
-- **[TRAIT_2]** - [DESCRIPTION]
-- **Strengths:** [YOUR_STRENGTHS]
-- **Growth areas:** [YOUR_GROWTH_AREAS]
-- **Thrives in:** [YOUR_IDEAL_ENVIRONMENT]
+*(Inferred from CV/portfolio - no formal assessment; see `02-behavioral-profile.md`)*
+- **Builder-verifier** - ships end-to-end, then adds evals, verifiers and guardrails before trusting output
+- **Broad, fast learner** - legal NLP, OCR, ASR, translation, forecasting and agents within two years
+- **Strengths:** production mindset, evaluation rigor, measurable outcomes
+- **Growth areas:** short tenures so far; MLOps at scale is exposure-level
+- **Thrives in:** hands-on, ownership-heavy teams building GenAI products
 
 ### What Excites You
-<!-- What motivates you professionally -->
-- [PASSION_1]
-- [PASSION_2]
+- Building LLM and agent systems that ship to real users, and making them reliable (evals, guardrails)
+- NLP and document AI; turning messy data into decisions
 
 ### Target Sectors
-<!-- Industries and companies you're targeting -->
-- [SECTOR_1]: [EXAMPLE_COMPANIES]
-- [SECTOR_2]: [EXAMPLE_COMPANIES]
+- AI-first startups and scale-ups (GenAI, agents, conversational AI): e.g. Sarvam AI, Krutrim, Observe.AI, Uniphore, Yellow.ai, Haptik, Glean, Rephrase, Atlan
+- Fintech and banking GCCs / tech centres (proven domain fit): e.g. Mastercard, Visa, American Express, JPMorgan Chase, Goldman Sachs, Standard Chartered GBS, Razorpay, PhonePe, CRED, Jupiter
+- Product companies and big-tech India centres: e.g. Google, Microsoft, Amazon, Adobe, Salesforce, Atlassian, Intuit, Walmart Global Tech, Flipkart, Swiggy, Zomato, Meesho
+- Analytics / AI consulting with real modelling work: e.g. Fractal, Tiger Analytics, Mu Sigma, Sigmoid, LatentView, Tredence, Quantiphi
 
 ### Deal-breakers
-<!-- Hard constraints on job search. Language requirements are handled separately and
-automatically from your Languages table above - don't duplicate them here. -->
-- [DEALBREAKER_1]
-- [DEALBREAKER_2]
+- Roles outside India
+- Roles requiring 3+ years of experience, or senior/lead titles
+- Roles that are AI in title only (pure data entry, annotation-only, or non-technical support)
+- Total CTC below INR 10 LPA (salary floor, confirmed 2026-09-29)
+- Notice period: 30 days at OTO Capital - availability is "within 30 days"; immediate-joiner roles are a FLAG
+- *Bond tolerance not yet recorded - flag any service agreement for the user to decide*
+
+## Working Rules for Code Changes
+Applies to the Python tools, Bun CLIs, `pipeline/`, `dashboard/` and LaTeX templates (after Karpathy's notes on LLM coding pitfalls):
+1. **Think before coding** - state assumptions and ask when a requirement is ambiguous instead of guessing.
+2. **Simplest thing that works** - no speculative features, abstractions or config nobody asked for.
+3. **Surgical changes** - touch only what the task needs; match the surrounding style; don't reformat or "improve" unrelated code.
+4. **Verify against the goal** - define how success is checked (a test, a compile, a page count) and run it before calling the work done.
+
+**Commit gate:** every `git commit` runs the full test suite (`.githooks/pre-commit`) and is refused if any test fails. Never bypass it with `--no-verify`; fix the failure or tell the user. When changing behaviour, add or update a test in `tests/` in the same change.
 
 ## Repo Structure
-- `cv/` - LaTeX CV variants (moderncv template, banking style)
+- `cv/` - LaTeX CV variants. Tailored CVs use the active 1-page template `templates/cv/fresher-onepage/`; `cv/main_example.tex` is the comprehensive master (moderncv) and the fact source
 - `cover_letters/` - LaTeX cover letters (custom cover.cls template)
 - `.claude/skills/` - AI skill definitions for the application workflow
 - `.agents/skills/` - Job search CLI tools
@@ -118,7 +124,7 @@ After creating or updating a CV or cover letter, re-read the generated file and 
 - [ ] Nice-to-have requirements are highlighted where there is a match
 
 ### Consistency
-- [ ] CV follows the standard 2-page moderncv/banking format
+- [ ] CV follows the active template's format (`templates/cv/fresher-onepage/`, 1 page - see the ACTIVE-TEMPLATE block in `05-cv-templates.md`)
 - [ ] Cover letter uses cover.cls template and established structure
 - [ ] Tone is consistent across CV and cover letter
 - [ ] No contradictions between CV and cover letter content
@@ -134,8 +140,8 @@ After creating or updating a CV or cover letter, re-read the generated file and 
 ### Compiled PDF verification (MANDATORY - never skip)
 Both documents MUST be compiled and visually inspected via the Read tool on the PDF output. "Looks fine in the .tex" is not acceptable - LaTeX page-break decisions are unpredictable. Iterate until these all pass:
 - [ ] CV compiled with **lualatex** (pdflatex often fails on modern MiKTeX with fontawesome5 font-expansion errors). Cover letter compiled with **xelatex** (cover.cls requires fontspec). If a custom template is active (registered via `/add-template`), compile with its declared command instead — see the `ACTIVE-TEMPLATE` block in `05-cv-templates.md`/`06-cover-letter-templates.md`.
-- [ ] **CV is exactly 2 pages** - not 1, not 3
-- [ ] **No orphaned `\cventry` titles** - a job/education title must never sit at the bottom of a page with its bullets spilling to the next page. Use `\needspace{5\baselineskip}` before each `\cventry` to prevent this, and `\enlargethispage{2-3\baselineskip}` to rescue a trailing section that just barely spills
+- [ ] **CV is exactly 1 page** (the active `fresher-onepage` template's page limit; Indian fresher norm) - never 2
+- [ ] **Page is full but not overflowing** - the 1-page CV should end near the bottom margin; cut by relevance (05-cv-templates.md) rather than shrinking fonts or margins below the template defaults
 - [ ] **Cover letter is exactly 1 page** - signature block must fit with the body, never overflow
 - [ ] **Cover letter bullet font matches body font** - `\lettercontent{}` must not wrap `\begin{itemize}...\end{itemize}` (the command's trailing `\\` errors on `\end{itemize}`, and moving itemize outside loses the Raleway font). Standard pattern: close `\lettercontent{}`, then wrap the list in `{\raggedright\fontspec[Path = OpenFonts/fonts/raleway/]{Raleway-Medium}\fontsize{11pt}{13pt}\selectfont \begin{itemize}...\end{itemize}\par}`
 

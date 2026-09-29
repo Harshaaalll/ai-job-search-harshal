@@ -1,0 +1,24 @@
+#!/bin/sh
+# Commit gate: refuse the commit unless the test suite passes.
+# Enabled with: git config core.hooksPath .githooks
+set -eu
+cd "$(git rev-parse --show-toplevel)"
+
+# The pristine-template guards only apply to the upstream repo; tell them where we are.
+origin=$(git remote get-url origin 2>/dev/null | sed -E 's#(\.git)?$##; s#.*github\.com[:/]##')
+export GITHUB_REPOSITORY="${origin:-local/ai-job-search}"
+
+echo "pre-commit: running Python test suite..."
+if ! python3 -m unittest discover -s tests -q; then
+  echo "pre-commit: tests FAILED - commit refused. Fix the failures (never use --no-verify)." >&2
+  exit 1
+fi
+
+# Bun CLI tests only for portal CLIs touched by this commit.
+for dir in $(git diff --cached --name-only | sed -n 's#^\(\.agents/skills/[^/]*/cli\)/.*#\1#p' | sort -u); do
+  if [ -d "$dir/tests" ]; then
+    echo "pre-commit: bun test in $dir"
+    (cd "$dir" && bun test) || { echo "pre-commit: $dir tests FAILED - commit refused." >&2; exit 1; }
+  fi
+done
+echo "pre-commit: all tests passed."

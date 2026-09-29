@@ -1,0 +1,12 @@
+[Unit]
+Description=Daily job pipeline: scrape, rank, draft (never submits)
+After=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/harshal/linkedin/ai-job-search
+Environment=PATH=/home/harshal/.local/bin:/home/harshal/.bun/bin:/usr/local/bin:/usr/bin:/bin
+Environment=CLAUDE_CONFIG_DIR=/home/harshal/.claude-personal
+ExecStart=/bin/sh -c 'mkdir -p pipeline/logs && exec /usr/bin/python3 pipeline/run.py >> "pipeline/logs/$(date +%%F)_pipeline.log" 2>&1'
+TimeoutStartSec=6h
+Nice=10

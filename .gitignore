@@ -27,6 +27,11 @@ salary_data.json
 **/job_scraper/seen_jobs.json
 **/job_scraper/notion_sync.json
 **/job_scraper/*.md
+# Daily pipeline state and logs (personal: job titles, companies, drafts)
+**/job_scraper/pipeline_status.json
+**/job_scraper/.pipeline.lock
+**/job_scraper/*.tmp
+pipeline/logs/
 *_BehavioralReport.pdf
 linkedin_Profile.pdf
 
@@ -48,6 +53,12 @@ Thumbs.db
 # Editor
 .vscode/
 .idea/
+
+# Per-machine Claude Code settings (e.g. plugins disabled for this project)
+.claude/settings.local.json
+
+# llm-council reports quote personal context (profile, offers)
+council/
 
 # Memory files (Claude Code user-specific)
 .claude/projects/

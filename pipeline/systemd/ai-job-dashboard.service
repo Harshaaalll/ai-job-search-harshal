@@ -1,0 +1,10 @@
+[Unit]
+Description=Job search dashboard (http://127.0.0.1:8787)
+
+[Service]
+WorkingDirectory=/home/harshal/linkedin/ai-job-search
+ExecStart=/usr/bin/python3 dashboard/server.py
+Restart=on-failure
+
+[Install]
+WantedBy=default.target

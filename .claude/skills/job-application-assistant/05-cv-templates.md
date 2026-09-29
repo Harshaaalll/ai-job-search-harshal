@@ -4,6 +4,20 @@ framework_version: 1.4.4
 
 # CV Templates and Tailoring Guide
 
+<!-- BEGIN ACTIVE-TEMPLATE (managed by /add-template - do not edit by hand) -->
+> **Active template override: `fresher-onepage`**
+>
+> A custom template is active. Where this block conflicts with the stock guidance below, this block wins. Structural advice below (tailoring, page-budget, cutting rules) still applies.
+>
+> - **Template skeleton:** `templates/cv/fresher-onepage/template.tex` — use this as the structural reference instead of the stock template
+> - **Manifest:** `templates/cv/fresher-onepage/TEMPLATE.md` — read this for style rules and known pitfalls before drafting
+> - **Source extension:** `.tex`
+> - **Compile command:** `rm -f <file>.pdf && mkdir -p build && lualatex -interaction=nonstopmode -output-directory=build <file>.tex && mv build/<file>.pdf ./` (not the command named in the stock guidance below — `/apply`'s compile step must use this instead). Run it from the output directory. It redirects to `build/`, so the log is in `build/`, and `/apply`'s Step 5e cleanup must delete that `build/` folder too
+> - **Fonts:** Latin Modern (TeX default, nothing bundled)
+> - **Page limit:** exactly 1 page(s)
+> - **Output file:** `cv/main_<company>_<role>.tex`; the template needs no class, package or font files beyond a standard TeX install
+<!-- END ACTIVE-TEMPLATE -->
+
 <!-- SETUP: Profile statements and section ordering are personalized by running /setup -->
 
 ## Template: LaTeX moderncv (Banking Style)
@@ -59,7 +73,7 @@ Expected output: `Output written on main_<company>_<role>.pdf (2 pages, ...)`. A
     linkcolor=blue,
     filecolor=magenta,
     urlcolor=blue,
-    pdftitle={[YOUR_NAME] - CV},
+    pdftitle={Harshal Bhambhani - CV},
     % Keep pdfpagemode=UseNone: this block runs after moderncv's own
     % \AtEndPreamble (moderncv.cls sets pdfpagemode there), so a FullScreen
     % value here would win and open every CV in fullscreen presentation mode.
@@ -69,13 +83,13 @@ Expected output: `Output written on main_<company>_<role>.pdf (2 pages, ...)`. A
 \usepackage{import}
 
 % Personal data
-\name{[FIRST_NAME]}{[LAST_NAME]}
+\name{Harshal}{Bhambhani}
 % If you have no address to list, DELETE this whole line. \address{}{}{} fails
 % with "There's no line here to end" on every moderncv version.
-\address{[YOUR_ADDRESS]}{}{}
-\phone[mobile]{[YOUR_PHONE]}
-\email{[YOUR_EMAIL]}
-\extrainfo{\href{[YOUR_LINKEDIN_URL]}{LinkedIn}, \href{[YOUR_GITHUB_URL]}{GitHub}}
+\address{Bangalore, Karnataka, India}{}{}
+\phone[mobile]{+91 8561972727}
+\email{bhambhaniharshal@gmail.com}
+\extrainfo{\href{https://www.linkedin.com/in/harshal-bhambhani-hhbb24}{LinkedIn}, \href{https://github.com/Harshaaalll}{GitHub}, \href{https://harshaaalll.github.io/}{Portfolio}}
 
 \begin{document}
 \makecvtitle
@@ -136,12 +150,15 @@ When the role sits outside your home domain, **lead with the domain-transfer arg
 
 **Create 2-3 profile statement templates for your main role types:**
 
-<!-- SETUP: These are populated based on your background -->
-**For [YOUR_PRIMARY_ROLE_TYPE] roles:**
-> [YOUR_PROFILE_STATEMENT_TEMPLATE_1]
+<!-- Populated by /setup 2026-09-28. Facts are all from 01-candidate-profile.md; rephrase per posting, never add claims. -->
+**For GenAI / LLM / AI Agent Engineer roles:**
+> AI engineer (BITS Pilani, 2026) building agentic GenAI systems in production. At OTO Capital, shipped a Gemini Live agent with tool calling that serves 5 regulated clients across 10 languages, cut hallucinated figures by gating 4 LLM tools behind a deterministic verifier, and gates every release with a 34-check eval suite. Earlier built RAG assistants (LangChain, FAISS) and a production contract-NLP pipeline at Standard Chartered GBS. Keen to build reliable LLM and agent products at [COMPANY].
 
-**For [YOUR_SECONDARY_ROLE_TYPE] roles:**
-> [YOUR_PROFILE_STATEMENT_TEMPLATE_2]
+**For Machine Learning / NLP Engineer roles:**
+> Machine learning engineer (BITS Pilani, 2026) with production NLP experience in banking. At Standard Chartered GBS, fine-tuned DistilBERT under a weighted loss to reach 98.6% recall on rare contract clauses and deployed the pipeline on Dataiku DSS, cutting audit time 90%. Now an AI engineer at OTO Capital, shipping tool-calling LLM agents with eval-gated releases. Keen to apply transformer fine-tuning, retrieval and evaluation to [COMPANY]'s problems.
+
+**For Data Scientist / Data Analyst roles:**
+> Data scientist (BITS Pilani, 2026) who turns operational data into decisions. Mined 36,091 PostgreSQL records into cohort insights that changed a fintech product's promise-date policy, modelled an exporter's order-to-cash process across 6 data-quality-checked pipeline stages, and built ML models from gradient boosting to fine-tuned transformers. Comfortable from SQL and Python analysis to deployed models and Power BI/Streamlit dashboards.
 
 Statements labeled *[Used for: <company>_<role>]* were extracted from archived application drafts by `/setup` Path A. They are **phrasing references, never fact sources**: when drafting from one, every factual claim still comes from `01-candidate-profile.md` - a past tailored draft does not vouch for its own accuracy.
 

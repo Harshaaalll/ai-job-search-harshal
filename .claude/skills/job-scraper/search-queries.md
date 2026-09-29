@@ -12,69 +12,112 @@ The `site:` query templates in this file are the **WebSearch fallback** — for 
 
 ## Search Sites
 
-Primary (your market's job boards - scaffold one with `/add-portal`):
-- **[YOUR_JOB_BOARD]** - your market's largest general job board
-- **linkedin.com/jobs** - LinkedIn job listings (filter: [YOUR_COUNTRY] / [YOUR_CITY]); also covered by `linkedin-search` CLI
-- **[YOUR_INDUSTRY_JOB_BOARD]** - a niche/industry board for your field (optional)
-- **[YOUR_ADDITIONAL_JOB_BOARD]** - another major board for your market (optional)
+<!-- Populated by /setup 2026-09-28 for Harshal Bhambhani: India, Bangalore first, fresher AI/ML/DS/GenAI/Agents. -->
 
-Secondary (company career pages via Google):
-- Direct Google searches with `site:` filters for known target companies
+**Enabled CLIs (primary):**
+- **linkedin-search** - pass these `--location` strings, in this order:
+  1. `"Bengaluru, Karnataka, India"` (always)
+  2. `"India"` with `--remote remote` (remote roles)
+  3. When the user says "broad" or "other cities": `"Hyderabad, Telangana, India"`, `"Pune, Maharashtra, India"`, `"Gurugram, Haryana, India"`, `"Mumbai, Maharashtra, India"`, `"Chennai, Tamil Nadu, India"`, `"Noida, Uttar Pradesh, India"`
+- **freehire-search** - use `--country IN --seniority junior` (add `--category ml_ai` for the AI/ML categories). Also try without `--seniority` and filter client-side, since many Indian postings leave seniority untagged.
+- Danish portals (jobindex, jobbank, jobdanmark, jobnet) stay **disabled** - not relevant for India.
+
+**WebSearch fallback (no CLI yet - candidates for `/add-portal`):**
+- **naukri.com** - India's largest general job board
+- **wellfound.com** (formerly AngelList Talent) - startups, strong for GenAI/agents roles
+- **instahyre.com**, **cutshort.io**, **hirist.tech** - tech-focused Indian boards
+- **foundit.in** - large general board
+- Company career pages for target companies (see Target Companies below)
 
 ## Query Categories
 
-Queries are grouped by priority. Write **each category in every language from your Languages table** (see Language scope above). Combine each query with your location terms (e.g. your city, region, or metro area) where the site supports it.
+All queries are English only (Languages table: English). The CLI searches use the bare title strings (e.g. `-q "GenAI Engineer"`); the `site:` lines are the WebSearch fallback.
 
-**Organize by function, not job title.** The same underlying work carries different titles across companies and markets (a "Data Scientist" role at one employer may be posted as "Insights Analyst" or "Data Consultant" at another). Name each priority category after the function it covers, and list several plausible job titles as query variants within that category rather than betting an entire priority tier on one exact title string.
+**Fresher filter terms:** add one of `fresher`, `entry level`, `0-2 years`, `graduate`, `junior`, `associate` when a portal returns mostly senior roles. Drop results asking for 3+ years (see the Academic Cutoff & Fresher Gate in `04-job-evaluation.md`).
 
-### Priority 1: [YOUR_PRIMARY_ROLE_TYPE]
+### Priority 1: GenAI / LLM / AI Agent Engineering
 
-These match your strongest and most desired career direction.
+Strongest and most wanted direction - building LLM apps, agents, RAG and evals.
 
-```
-site:[YOUR_JOB_BOARD] "[YOUR_PRIMARY_JOB_TITLE_1]" [YOUR_CITY]
-site:[YOUR_JOB_BOARD] "[YOUR_PRIMARY_JOB_TITLE_2]" [YOUR_CITY]
-site:[YOUR_JOB_BOARD] "[YOUR_KEY_SKILL]" [YOUR_CITY]
-site:linkedin.com/jobs "[YOUR_PRIMARY_JOB_TITLE_1]" [YOUR_COUNTRY]
-```
-
-### Priority 2: [YOUR_DOMAIN_EXPERTISE]
-
-These match your domain expertise.
+Title variants: GenAI Engineer, Generative AI Engineer, AI Engineer, LLM Engineer, AI Agent Engineer, Agentic AI Engineer, Applied AI Engineer, AI Engineer - Fresher, Associate AI Engineer, Junior AI Engineer, Conversational AI Engineer
 
 ```
-site:[YOUR_JOB_BOARD] [YOUR_DOMAIN_KEYWORD_1] [YOUR_CITY] OR [YOUR_REGION]
-site:[YOUR_JOB_BOARD] [YOUR_DOMAIN_KEYWORD_2] [YOUR_COUNTRY]
-site:linkedin.com/jobs [YOUR_DOMAIN_KEYWORD_1] [YOUR_CITY] [YOUR_COUNTRY]
+"GenAI Engineer"                      (linkedin: Bengaluru; jobage 14)
+"AI Engineer" fresher                 (linkedin: Bengaluru)
+"LLM Engineer"                        (linkedin: Bengaluru; India remote)
+"Agentic AI"                          (linkedin: Bengaluru)
+"Applied AI Engineer"                 (linkedin: Bengaluru)
+freehire: -q "LLM" --country IN --category ml_ai
+site:naukri.com "generative ai engineer" fresher bangalore
+site:wellfound.com/jobs "AI engineer" Bangalore LLM
+site:instahyre.com "GenAI" engineer bangalore
 ```
 
-### Priority 3: [YOUR_ADJACENT_ROLE_TYPE]
+### Priority 2: Machine Learning / NLP Engineering
 
-Adjacent roles you could pivot into.
+Domain strength - model fine-tuning, NLP, document AI.
 
-```
-site:[YOUR_JOB_BOARD] "[YOUR_ADJACENT_TITLE_1]" [YOUR_KEY_SKILL] [YOUR_CITY]
-site:[YOUR_JOB_BOARD] "[YOUR_ADJACENT_TITLE_2]" [YOUR_KEY_SKILL] [YOUR_CITY]
-```
-
-### Priority 4: Broader Technical / Consulting
-
-Wider net for general technical roles.
+Title variants: Machine Learning Engineer, ML Engineer, NLP Engineer, Associate ML Engineer, Junior Machine Learning Engineer, AI/ML Engineer, Applied Scientist (entry), Computer Vision Engineer (document AI / OCR focus only)
 
 ```
-site:[YOUR_JOB_BOARD] [YOUR_KEY_SKILL] developer [YOUR_CITY]
-site:linkedin.com/jobs "[YOUR_KEY_SKILL] developer" [YOUR_CITY]
-site:[YOUR_JOB_BOARD] "technical consultant" [YOUR_DOMAIN] [YOUR_CITY]
+"Machine Learning Engineer" entry level   (linkedin: Bengaluru)
+"NLP Engineer"                            (linkedin: Bengaluru; India remote)
+"AI/ML Engineer" fresher                  (linkedin: Bengaluru)
+freehire: -q "machine learning" --country IN --seniority junior
+site:naukri.com "machine learning engineer" fresher bangalore
+site:wellfound.com/jobs "machine learning engineer" India
+```
+
+### Priority 3: Data Science
+
+Second career track - modelling, analytics, experimentation.
+
+Title variants: Data Scientist, Associate Data Scientist, Junior Data Scientist, Data Scientist - Fresher, Decision Scientist, Analytics Engineer (with ML), Data Science Analyst, AI/ML Computational Science Associate
+
+```
+"Associate Data Scientist"        (linkedin: Bengaluru)
+"Data Scientist" fresher          (linkedin: Bengaluru)
+"Junior Data Scientist"           (linkedin: Bengaluru; India remote)
+"Decision Scientist"              (linkedin: Bengaluru)
+site:naukri.com "data scientist" fresher 2026 bangalore
+```
+
+### Priority 4: Adjacent / broader net (run only on "broad")
+
+Roles that use the same skills with a different emphasis. Suggested because the profile fits them well:
+- **AI Solutions / Forward-Deployed / Customer AI Engineer** - builds LLM solutions with clients (matches the OTO Capital + Goel Exports consulting mix)
+- **Graduate / campus programs** at banks and GCCs - "Graduate Analyst", "Technology Analyst", "Analyst - AI/ML" (matches the Standard Chartered GBS background; watch CGPA cutoffs)
+- **Data Analyst with Python/ML**, **Business Intelligence Engineer**, **Analytics Engineer (dbt)** - fallback track
+- **MLOps / ML Platform (junior)** - stretch; only when the posting is fresher-level
+
+```
+"AI Solutions Engineer"           (linkedin: Bengaluru)
+"Forward Deployed Engineer"       (linkedin: Bengaluru; India remote)
+"Graduate Analyst" AI             (linkedin: Bengaluru, Hyderabad, Pune)
+"Data Analyst" python machine learning fresher   (linkedin: Bengaluru)
+"Analytics Engineer" dbt          (linkedin: Bengaluru)
+```
+
+### Target Companies (monitor career pages; use `site:` queries or LinkedIn `-q "<company> AI"`)
+
+- **AI-first startups:** Sarvam AI, Krutrim, Observe.AI, Uniphore, Yellow.ai, Haptik, Atlan, Glean (India), Rephrase.ai, Gupshup
+- **Fintech / banking GCCs** (proven domain fit): Mastercard, Visa, American Express, JPMorgan Chase, Goldman Sachs, Standard Chartered GBS, Wells Fargo, Razorpay, PhonePe, CRED, Jupiter
+- **Product / big tech India:** Google, Microsoft, Amazon, Adobe, Salesforce, Atlassian, Intuit, Walmart Global Tech, Flipkart, Swiggy, Meesho
+- **AI/analytics consulting:** Fractal, Tiger Analytics, Sigmoid, LatentView, Tredence, Quantiphi, Mu Sigma
+
+```
+site:careers.mastercard.com "AI" OR "machine learning" Bangalore
+site:jobs.lever.co OR site:boards.greenhouse.io "AI engineer" Bangalore
+site:jobs.ashbyhq.com "LLM" India
 ```
 
 ## Location Filter
 
-When evaluating results, verify the job location is within reasonable commute distance from your home. Define acceptable areas:
-- [YOUR_CITY] and surrounding areas
-- [ACCEPTABLE_AREA_1]
-- [ACCEPTABLE_AREA_2]
-- [BORDERLINE_AREA] (borderline - ~X min by transit)
-- [TOO_FAR_AREA] (too far)
+Home base Bangalore; relocation within Indian metros is acceptable.
+- **Ideal:** Bengaluru / Bangalore (any area, including Whitefield, Electronic City, Outer Ring Road), and remote within India
+- **Acceptable:** Hyderabad, Pune, Gurugram / Delhi NCR / Noida, Mumbai / Navi Mumbai, Chennai (relocation needed - note it in the results)
+- **Borderline:** Tier-2 Indian cities (Ahmedabad, Kochi, Jaipur, Indore, Coimbatore, Chandigarh, etc.) - flag for the user
+- **Too far:** anywhere outside India (not searching abroad), and "remote" roles restricted to other countries
 
 ## Language Filter
 

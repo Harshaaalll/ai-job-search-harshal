@@ -1,10 +1,8 @@
-%% Example CV - [YOUR_NAME]
+%% Master CV - Harshal Bhambhani
 %% Comprehensive overview of all competencies, experience, and achievements.
-%% Use as a master reference when tailoring role-specific CVs.
-%%
-%% SETUP: Run /setup to populate this with your actual information.
+%% FACT SOURCE for /apply (with 01-candidate-profile.md). Not length-limited: tailored CVs
+%% are built from the 1-page template in templates/cv/fresher-onepage/ (the active template).
 %% Compile with: lualatex main_example.tex
-%% (pdflatex often fails on modern MiKTeX with fontawesome5 font-expansion errors.)
 
 \documentclass[11pt,a4paper,sans]{moderncv}
 \moderncvstyle{banking}
@@ -40,7 +38,7 @@
     linkcolor=blue,
     filecolor=magenta,
     urlcolor=blue,
-    pdftitle={[YOUR_NAME] - CV},
+    pdftitle={Harshal Bhambhani - CV},
     % Keep pdfpagemode=UseNone: this block runs after moderncv's own
     % \AtEndPreamble (moderncv.cls sets pdfpagemode there), so a FullScreen
     % value here would win and open every CV in fullscreen presentation mode.
@@ -50,136 +48,108 @@
 \usepackage{import}
 
 % personal data
-\name{[First]}{[Last]}
-% If you have no address to list, DELETE this whole line. \address{}{}{} fails
-% with "There's no line here to end" on every moderncv version.
-\address{[Your Address, City, Country]}{}{}
-\phone[mobile]{[+XX XXXXXXXXXX]}
-\email{[your.email@example.com]}
-\extrainfo{\href{[https://linkedin.com/in/your-profile]}{LinkedIn}, \href{[https://github.com/your-username]}{GitHub}}
+\name{Harshal}{Bhambhani}
+\address{Bangalore, Karnataka, India}{}{}
+\phone[mobile]{+91 8561972727}
+\email{bhambhaniharshal@gmail.com}
+\extrainfo{\href{https://www.linkedin.com/in/harshal-bhambhani-hhbb24}{LinkedIn}, \href{https://github.com/Harshaaalll}{GitHub}, \href{https://harshaaalll.github.io/}{Portfolio}}
 
 \begin{document}
 
 \makecvtitle
 
-% ============================================================
-%     PROFILE STATEMENT
-% ============================================================
-
 \vspace{6pt}
-\small{[Write a 3-5 line profile statement tailored to the role you're applying for. Focus on what makes you uniquely qualified. Example: "Data scientist with a PhD in [field] and X years of industry experience. Combines deep domain expertise in [domain] with strong applied machine learning and Python development skills. Experienced in developing end-to-end ML pipelines, from data ingestion to stakeholder-facing dashboards."]}
-
-% ============================================================
-%     CORE COMPETENCIES
-% ============================================================
+\small{AI engineer (BITS Pilani, 2026) building agentic GenAI systems in a regulated setting at OTO Capital, serving 5 enterprise clients across 10 languages. Cut hallucinated outputs by gating 4 LLM tools behind a deterministic verifier, and gates releases with a 34-check eval suite and control arms. Turns operational data into decisions, mining 36,091 records into cohort insights that changed product policy. Previously shipped a production contract-NLP pipeline at Standard Chartered GBS and a RAG assistant at DG Liger Consulting.}
 
 \section{Core Competencies}
 \vspace{1pt}
 \begin{itemize}
-
-\item \textbf{[Skill Category 1]}: [Specific skills, frameworks, tools. Be concrete.]
-
-\item \textbf{[Skill Category 2]}: [Specific skills, frameworks, tools.]
-
-\item \textbf{[Skill Category 3]}: [Specific skills, frameworks, tools.]
-
-\item \textbf{[Skill Category 4]}: [Domain expertise, methods, approaches.]
-
-\item \textbf{[Skill Category 5]}: [Tools, platforms, software.]
-
+\item \textbf{GenAI \& Agents}: LLMs, prompt engineering, agentic AI, tool calling, RAG, LangChain, LangGraph, FAISS, hybrid retrieval (BM25 + embeddings, RRF), guardrails, Gemini Live, Qwen 7B, Mistral, LLaMA 3.
+\item \textbf{Responsible AI \& Evaluation}: hallucination mitigation, deterministic verifiers, eval suites, A/B control arms, trajectory and retrieval evals (recall@k, MRR), model monitoring, compliance-aware design.
+\item \textbf{ML \& NLP}: DistilBERT and SBERT fine-tuning (weighted loss, MultipleNegativesRankingLoss), BART, RoBERTa, NLLB-200, Whisper, XGBoost, LightGBM, scikit-learn, SHAP, SMOTE, PaddleOCR, OpenCV.
+\item \textbf{Data \& Cloud}: Python, SQL, PostgreSQL, ETL pipelines, dbt, Pandas, NumPy, GCP Vertex AI, AWS, Docker, Git, Neo4j.
+\item \textbf{Delivery \& BI}: FastAPI, Flask, REST APIs, Streamlit, Power BI, Dataiku DSS, Odoo 19, technical documentation.
 \end{itemize}
-
-% ============================================================
-%     PROFESSIONAL EXPERIENCE
-% ============================================================
 
 \section{Professional Experience}
 \vspace{3pt}
 \begin{itemize}
 
-% --- Most Recent Role ---
-\item{\cventry{[YYYY-Present]}{[Job Title]}{[Company]}{[City, Country]}{}{\vspace{1pt}
+\item{\cventry{Aug 2026 - Present}{AI Engineer}{OTO Capital}{India}{}{\vspace{1pt}
 \begin{itemize}
-    \item {[Achievement or responsibility 1 - be specific, use numbers where possible]}
-    \item {[Achievement or responsibility 2]}
-    \item {[Achievement or responsibility 3]}
-    \item {[Achievement or responsibility 4]}
+    \item {Shipped a Gemini Live agent with tool calling on FastAPI, serving 5 regulated clients across 10 languages.}
+    \item {Mitigated hallucinated figures by gating 4 LLM tools behind a deterministic Python verifier every turn.}
+    \item {Mined 36,091 PostgreSQL records into cohort insights that redirected the product's promise-date policy.}
+    \item {Instrumented a 34-check eval suite with byte-identical control arms, gating each production release.}
 \end{itemize}}}
 
 \vspace{3pt}
 
-% --- Previous Role ---
-\item{\cventry{[YYYY-YYYY]}{[Job Title]}{[Company]}{[City, Country]}{}{\vspace{1pt}
+\item{\cventry{Jul 2026 - Aug 2026}{Data \& Analytics Consultant}{Goel Exports}{India}{}{\vspace{1pt}
 \begin{itemize}
-    \item {[Achievement or responsibility 1]}
-    \item {[Achievement or responsibility 2]}
-    \item {[Achievement or responsibility 3]}
+    \item {Modelled a furniture exporter's full order-to-cash process into a documented 4-phase Odoo 19 data model.}
+    \item {Enforced field-level data quality rules across 6 pipeline stages via a critical-datapoint framework.}
+    \item {Traced CRM automation defects through Odoo system logs, fixing tag-trigger and activity-routing errors.}
 \end{itemize}}}
 
 \vspace{3pt}
 
-% --- Earlier Role ---
-\item{\cventry{[YYYY-YYYY]}{[Job Title]}{[Company]}{[City, Country]}{}{\vspace{1pt}
+\item{\cventry{Jul 2025 - Dec 2025}{Data Science Intern}{Standard Chartered Global Business Services Pvt. Ltd.}{Bangalore, India}{}{\vspace{1pt}
 \begin{itemize}
-    \item {[Achievement or responsibility 1]}
-    \item {[Achievement or responsibility 2]}
+    \item {Deployed a production NLP pipeline on Dataiku DSS, parsing 100+ page contracts and cutting audit time 90\%.}
+    \item {Calibrated confidence-threshold guardrails, filtering 95\%+ false positives before human compliance review.}
+    \item {Fine-tuned DistilBERT under a weighted loss, reaching 98.6\% recall on rare clauses in 90\%+ irrelevant text.}
+    \item {Adapted SBERT with MultipleNegativesRankingLoss, retrieving gold-standard clauses by cosine similarity.}
+    \item {Streamlined ETL ingestion with 250-token windows and 50-token overlaps, holding zero data loss on files.}
+\end{itemize}}}
+
+\vspace{3pt}
+
+\item{\cventry{Jun 2024 - Jul 2024}{Machine Learning Engineer Intern}{DG Liger Consulting}{Gurgaon, India}{}{\vspace{1pt}
+\begin{itemize}
+    \item {Constructed a LangChain RAG assistant over 30+ client PDFs, routing MiniLM embeddings through FAISS.}
+    \item {Indexed document embeddings into a FAISS vector store, enabling sub-second semantic search at query time.}
+    \item {Integrated a 3B-parameter LLM over retrieval, grounding answers for business teams in internal documents.}
 \end{itemize}}}
 
 \end{itemize}
 
-% ============================================================
-%     EDUCATION
-% ============================================================
+\section{Technical Projects}
+\vspace{1pt}
+\begin{itemize}
+\item {\textbf{\href{https://github.com/Harshaaalll/sanwaad}{Sanwaad}} (2026) -- multi-agent complaint resolution on LangGraph: 4 agents, typed tool registry with approval gates, hybrid ONNX-embedding + BM25 retrieval (RRF); offline evals 15/15 trajectory scenarios, 0 safety violations, recall@5 1.00 on a 19-case English/Hindi/Hinglish set, tool-call success 0.973.}
+\item {\textbf{\href{https://github.com/Harshaaalll/medical-bill-ocr-fraud}{Medical Bill OCR}} (Nov 2025) -- Qwen 7B structured extraction to schema-validated JSON, IQR outliers, reconciliation and SHA-256 duplicate checks; PaddleOCR with CLAHE and 4x DPI upscaling at 90\%+ extraction accuracy.}
+\item {\textbf{\href{https://github.com/Harshaaalll/autotransflow}{AutoTransFlow}} (Aug 2025 - Nov 2025) -- on-premise NLLB-200 translation across 200 languages under a zero-external-API policy; doc-layout-yolo layout detection at 0.25 confidence; OpenCV re-rendering at original bounding boxes.}
+\item {\textbf{\href{https://github.com/Harshaaalll/market-analysis-llm}{Market Analysis Using LLMs}} (Jun 2024 - Jul 2024) -- 500+ scraped articles, BART summarisation and RoBERTa sentiment with SMOTE rebalancing, Flask REST API and Streamlit dashboard.}
+\item {\textbf{Knowledge Graph RAG for Legal AI} -- Neo4j + Vespa + InLegalBERT + Mistral over 1,000 Indian Supreme Court cases, IRAC-style reasoning.}
+\item {\textbf{\href{https://github.com/Harshaaalll/multilingual-asr}{Multilingual ASR}} -- zero-shot Urdu speech recognition with Whisper and an IndicBERT MLM corrector, 14\% WER.}
+\item {\textbf{\href{https://github.com/Harshaaalll/career-copilot}{Career Copilot 2.0}} -- 11-module AI job-search system: FAISS job matching, response prediction, ATS optimisation (LangChain, Groq LLaMA 3).}
+\item {\textbf{\href{https://github.com/Harshaaalll/airfare-ml}{AirFare-ML}} -- 6 regression algorithms benchmarked with SHAP; R\textsuperscript{2} 93.9\%, MAE Rs 689.}
+\item {\textbf{\href{https://github.com/Harshaaalll/hydera-analytics}{HydRERA Analytics}} -- Python to PostgreSQL to dbt ELT, Power BI builder scorecards, XGBoost delay prediction.}
+\item {\textbf{Hasthkala Setu} (BITS design project) -- XGBoost + SHAP model (AUC 0.938, 776 subjects) and a Flutter/Firebase app for artisans.}
+\end{itemize}
 
 \section{Education}
 \vspace{1pt}
 \begin{itemize}
-
-\item{\cventry{[YYYY-YYYY]}{[Degree] in [Field]}{[Institution]}{[City, Country]}{}{\vspace{1pt}
-Thesis: ``[Thesis Title].'' [Brief description of research focus.]
+\item{\cventry{2022-2026}{B.E. Electrical \& Electronics Engineering, Minor in Computer Science}{BITS Pilani, Hyderabad Campus}{Hyderabad, India}{}{\vspace{1pt}
+Coursework: Machine Learning, Statistics \& Probability for Analytics, Database Systems, Artificial Intelligence, DSA, Operating Systems, OOP.
 }}
-
 \vspace{3pt}
-
-\item{\cventry{[YYYY-YYYY]}{[Degree] in [Field]}{[Institution]}{[City, Country]}{}{\vspace{1pt}
-[Brief description or key topics.]
-}}
-
+\item{\cventry{2019-2021}{CBSE Class XII (92.2\%) and Class X (91.2\%)}{MDS Public School; St. Paul's Convent School}{India}{}{}}
 \end{itemize}
-
-% ============================================================
-%     LANGUAGES
-% ============================================================
 
 \section{Languages}
 \vspace{1pt}
 \begin{itemize}
-\item {[Language 1] (native), [Language 2] (fluent), [Language 3] (intermediate).}
+\item {English (professional working proficiency).}
 \end{itemize}
-
-% ============================================================
-%     PUBLICATIONS (optional)
-% ============================================================
-
-\section{Publications}
-\vspace{1pt}
-\begin{itemize}
-\item {[Author(s)] ([Year]). [Title]. [Journal/Conference]. \href{[DOI_URL]}{DOI link}}
-\end{itemize}
-
-% ============================================================
-%     HONORS AND AWARDS (optional)
-% ============================================================
 
 \section{Honors and Awards}
 \vspace{1pt}
 \begin{itemize}
-\item{\textbf{[Award Name]} -- [Event/Organization] ([Year]).}
+\item{State-level representative in basketball and cricket; volleyball gold medalist; former logistics team captain.}
 \end{itemize}
-
-% ============================================================
-%     REFERENCES
-% ============================================================
 
 \section{References}
 \vspace{1pt}

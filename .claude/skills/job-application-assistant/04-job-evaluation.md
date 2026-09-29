@@ -30,6 +30,26 @@ If the candidate's permit also constrains *hours* or *start date* (a student vis
 
 A role that fails this gate is not scored and not drafted. Everything below applies only to roles that pass it.
 
+**Candidate status (Harshal):** Indian citizen searching only within India, so this gate normally PASSes. It only matters if a non-India role slips into results - those FAIL on Location anyway (not searching abroad).
+
+## Academic Cutoff & Fresher Gate — India-specific, run before scoring
+
+Indian fresher, campus and graduate-program postings frequently state academic cutoffs and experience bands that act as hard ATS filters. Harshal's figures: **B.E. 2026 graduate, CGPA 6.8/10, Class XII 92.2%, Class X 91.2%, roughly 2 months of full-time work (Aug 2026 onward) plus 2 internships.**
+
+| Posting wording | Verdict |
+|-----------------|---------|
+| CGPA / percentage cutoff **above 6.8** (e.g. "7.0 CGPA and above", "70% throughout", "no backlogs with 7.5+") | **FLAG — do not draft until the user confirms.** Quote the cutoff. Application forms asking for CGPA must get the true 6.8; never round up. Suggest a referral route or an off-campus/lateral posting at the same company instead. |
+| Cutoff at or below 6.8, or "60% throughout" (12th 92.2% and 10th 91.2% clear it) | PASS |
+| Eligible batch lists **2026** (or "2025/2026 passouts") | PASS |
+| Eligible batch excludes 2026 (e.g. "2027 batch only", "2024/2025 only") | **FAIL** - quote it |
+| "Freshers", "0-1 yrs", "0-2 yrs", "entry level", "graduate", "associate", "junior" | PASS |
+| "1-3 yrs" | PASS with note (internships + current role make a reasonable case) |
+| "2-4 yrs" | FLAG - stretch, apply only if the role is otherwise Strong Fit |
+| "3+ yrs" or senior/lead/staff | **FAIL** - skip |
+| Service agreement / bond (e.g. "2-year bond", "Rs X lakh liquidated damages") | FLAG - surface to the user; not an automatic fail |
+
+A FAIL here means no score and no draft. Report it with the quoted source.
+
 ## Language Gate — run before scoring
 
 This gate checks a posting's language requirements against what the candidate actually speaks. It is not one of the five Scoring Dimensions below - it runs before them, structured the same way as the Eligibility Gate above: read the posting, classify against profile data, and treat a hard mismatch as FAIL before scoring. Its verdict is tracked downstream: `/rank` records the result as `language_gate` (PASS/FAIL/FLAG) with a supporting `language_note`, persists both into `seen_jobs.json`, and treats a FAIL as a shortlist veto; `/scrape` surfaces the flag in its results table and carries a language-override rule for postings whose ad language differs from the role's working language. `/apply`'s language detection (Step 1, which extracts a posting's required language generically) feeds this same check.
@@ -60,9 +80,9 @@ How well do the required/preferred skills align with the candidate's capabilitie
 | 40-59 | Partial match, significant upskilling needed |
 | 0-39 | Fundamental mismatch |
 
-**Strong match areas:** [YOUR_PRIMARY_SKILLS]
-**Moderate match areas:** [YOUR_SECONDARY_SKILLS]
-**Weak match areas:** [SKILLS_YOU_LACK]
+**Strong match areas:** Python, SQL/PostgreSQL, LLM application engineering (prompting, tool calling, RAG, LangChain/LangGraph, FAISS/vector search), agentic AI and guardrails/hallucination mitigation, LLM evaluation (eval suites, control arms, retrieval metrics), NLP with transformers (fine-tuning DistilBERT/SBERT, BART, RoBERTa), document AI / OCR pipelines, FastAPI/Flask services, Gemini / GCP Vertex AI
+**Moderate match areas:** classical ML (XGBoost, LightGBM, scikit-learn, SHAP), data engineering/ETL (dbt, pipelines, data quality), BI and analytics (Power BI, Streamlit, cohort analysis), computer vision for documents (OpenCV, YOLO layout detection), speech (Whisper), Docker, AWS, Dataiku DSS, knowledge graphs (Neo4j)
+**Weak match areas:** Deep learning research / training large models from scratch (PyTorch-level custom architectures, distributed training), MLOps at scale (Kubernetes, Kubeflow, MLflow, feature stores - exposure only), big data (Spark, Hadoop, Databricks), core computer vision (detection/segmentation research), C++/Java/Go backends, frontend engineering, Tableau, R, advanced statistics/econometrics
 
 ### 2. Experience Match (0-100)
 Does work history align with what they're looking for? Match on the function and nature of the work performed, not the literal job title - a "Data Consultant" and a "Data Scientist" role can be functionally identical.
@@ -74,9 +94,11 @@ Does work history align with what they're looking for? Match on the function and
 | 40-59 | Adjacent experience, would need to make the case |
 | 0-39 | Unrelated experience |
 
-**Strong:** [YOUR_DIRECT_EXPERIENCE_DOMAINS]
-**Moderate:** [YOUR_ADJACENT_EXPERIENCE]
-**Entry-level:** [ROLES_WITH_LIMITED_EXPERIENCE]
+**Strong:** GenAI / LLM application engineering and AI agents (OTO Capital agent in production, Sanwaad), NLP on documents in banking/finance (Standard Chartered GBS), RAG assistants (DG Liger)
+**Moderate:** Data science / analytics (cohort analysis, ML prediction projects), data consulting and data modelling (Goel Exports, Odoo), document OCR and multilingual pipelines
+**Entry-level:** ML platform / MLOps, data engineering at scale, computer vision research, business analyst roles without modelling
+
+**Calibration note:** Harshal is a **fresher** (2026 batch). Score experience against entry-level expectations: two internships plus a production AI role are *above* the typical fresher bar, so a 0-2 yr posting in GenAI/NLP should usually score 75-90 here.
 
 ### 3. Behavioral/Culture Fit (0-100)
 Does the role and company culture match the behavioral profile?
@@ -91,9 +113,11 @@ Does the role and company culture match the behavioral profile?
 **Red flags to research:** Department disorganization, work dominated by maintenance over development, poor chemistry with leadership, culture mismatches. Check reviews, media coverage, LinkedIn connections, and network contacts for insider perspective.
 
 ### 4. Location & Logistics (Pass/Fail + Notes)
-- Within commute range: PASS
-- Remote with occasional office: PASS
-- Requires relocation: FAIL (deal-breaker)
+- Bangalore / Bengaluru (on-site, hybrid): PASS - first priority
+- Remote within India: PASS
+- Other Indian metros - Hyderabad, Pune, Gurugram / Delhi NCR / Noida, Mumbai / Navi Mumbai, Chennai: PASS (relocation within India is fine) - note in the report that it is not Bangalore
+- Tier-2 Indian cities: FLAG (discuss with user)
+- Outside India: FAIL (not searching abroad)
 - Frequent international travel: FLAG (discuss with user)
 
 ### 5. Career Alignment & Motivation (0-100)
@@ -107,19 +131,19 @@ Does this role advance career goals and contain tasks that energize?
 | 0-39 | Dead end or backwards step |
 
 **Career goals:**
-- [YOUR_CAREER_GOAL_1]
-- [YOUR_CAREER_GOAL_2]
-- [YOUR_CAREER_GOAL_3]
+- Build a long-term track as an AI / ML engineer on GenAI, LLM and agent systems that ship to real users
+- Get strong mentorship and engineering practice (evals, MLOps, system design) in the first 1-2 years
+- Keep a data-science foundation (modelling, experimentation, analytics) as a second track
 
 **Motivation filter:** Evaluate not just whether you *can* do the tasks, but whether the tasks will *energize* you. Consider:
-- Tasks that energize: [YOUR_ENERGIZING_TASKS]
-- Tasks that drain: [YOUR_DRAINING_TASKS]
+- Tasks that energize: building LLM/agent systems end to end, designing evals and guardrails, NLP/document AI, turning messy data into decisions, shipping to production *[inferred from CV/projects - confirm]*
+- Tasks that drain: pure dashboard/report maintenance, manual data entry or labeling-only work, non-technical support roles *[inferred - confirm]*
 - Non-task factors: leadership style, department culture, company values, degree of autonomy
 
 **Life situation alignment:** Consider personal constraints:
-- **Security**: [YOUR_FINANCIAL_SITUATION_CONTEXT]
-- **Flexibility**: [YOUR_SCHEDULE_CONSTRAINTS]
-- **Professional development**: [YOUR_GROWTH_PRIORITIES]
+- **Security**: currently employed (OTO Capital, since Aug 2026), so there is no urgency to accept a weak offer. **Salary floor: INR 10 LPA total CTC** (confirmed 2026-09-29). A posting or offer whose stated or well-evidenced pay is below 10 LPA is a FLAG in Career Alignment (quote the figure); unknown pay is not penalised.
+- **Flexibility**: **notice period at OTO Capital is 30 days** (confirmed 2026-09-29). Use "can join within 30 days" wherever a form or cover letter asks about availability; flag postings that demand an immediate joiner.
+- **Professional development**: prefers roles with structured mentorship, GenAI/agent work and a clear AI/ML engineering growth path. Product companies, GCCs (global capability centres) and well-funded AI startups rank above body-shopping service contracts.
 
 ### 6. Salary Benchmark (Optional)
 
@@ -173,7 +197,7 @@ Present the evaluation as:
 
 ### Company Research Checklist
 - [ ] Checked company website (mission, values, recent news)
-- [ ] Checked review sites (Glassdoor, Jobindex, etc.)
+- [ ] Checked review sites (Glassdoor, AmbitionBox, etc.)
 - [ ] Checked LinkedIn for team size, recent hires, connections
 - [ ] Checked media for restructuring, growth, or workplace issues
 - [ ] Identified network contacts who may know the team/manager

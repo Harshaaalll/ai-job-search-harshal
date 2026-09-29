@@ -137,6 +137,10 @@ ALLOWED_IGNORE_NEGATIONS = {
 # executed on session start:
 # https://research.jfrog.com/post/shai-hulud-is-back-august/
 ALLOWED_HOOKS: set[str] = set()
+# Reviewed 2026-09-29 (personal fork): blocks `git commit --no-verify/-n` and core.hooksPath
+# changes so the test-gated .githooks/pre-commit cannot be bypassed. Read-only: inspects the
+# Bash command from stdin and only ever denies; runs nothing else.
+ALLOWED_HOOKS.add('PreToolUse:python3 "$CLAUDE_PROJECT_DIR/.claude/hooks/guard_commit.py"')
 
 FORBIDDEN_SCRIPTS = {"preinstall", "install", "postinstall", "prepare", "prepack"}
 
