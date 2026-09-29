@@ -123,7 +123,27 @@ On the CV:
 - **AutoTransFlow - On-Premise Document Pipeline Under Data Constraints** (Aug 2025 - Nov 2025): on-premise NLLB-200 translation pipeline across 200 languages under a zero-external-API data policy; doc-layout-yolo layout detection at a recall-first 0.25 confidence threshold; re-rendered translated text at original bounding boxes with OpenCV, preserving layout. Repo: github.com/Harshaaalll/autotransflow
 
 From GitHub / portfolio (not on the current CV - usable when relevant, verify details in the repo before quoting numbers):
-- **Sanwaad - multi-agent complaint resolution** [source: GitHub README, Sep 2026]: LangGraph state machine (listener -> triage -> pattern/judge -> retrieval -> ghostwriter -> validation -> planning -> human review gate -> execution) with 4 agents (Listener, Pattern, Judge, Ghostwriter); act-observe-verify-retry support loop with explicit budgets; Gemini with fallbacks and token caps; local hybrid retrieval (ONNX embeddings + BM25 fused with RRF); FastAPI; typed tool registry with approval requirements; SQLite checkpoints. Offline evals: 15/15 trajectory scenarios, 0 safety violations, 13 loop-eval scenarios, 19 retrieval golden-set cases in English/Hindi/Hinglish (recall@5 1.00, MRR 0.75), tool-call success 0.973, p50/p95 latency 1349.8 ms / 1911.6 ms. Repo: github.com/Harshaaalll/sanwaad. **Strongest AI-agents evidence outside work.**
+- **Sanwaad - multi-agent complaint resolution** [source: github.com/Harshaaalll/sanwaad README, read 2026-09-29; candidate's own work, Sep 2026]:
+  LangGraph case graph (listener -> triage -> pattern/judge -> prioritise -> retrieve -> ghostwriter -> ground_check ->
+  plan -> review_gate with interrupt() -> execute); 4 agents (Listener catches untagged brand mentions, Pattern counts distinct
+  people reporting the same issue in a window, Judge scores the account - customer/troll/bot, Ghostwriter drafts);
+  Gemini with fallbacks and token caps; hybrid RAG over a 33-clause policy index (local ONNX embeddings + BM25 fused with RRF,
+  Rs 0 per query); every drafted claim must trace to a clause (ungrounded -> revise up to 2x -> human); "model suggests, code
+  decides": refund proposals checked against 9 code rules and a Rs 25,000 ceiling, a person approves each money move, the
+  executor re-checks before running; typed tool registry with a risk ladder; FastAPI review console; Dockerfile with
+  liveness/readiness probes; CI on every push (ruff, tests, both evals, Docker boot); **420 tests**, no API key needed.
+  Reliability: items failing 3 times are dead-lettered; per-case cost ceiling; per-route latency budgets; circuit breakers.
+  Voice leg: spoken-number normaliser for English, Hinglish and Devanagari (Indian number scales).
+  Evals (offline, deterministic stubs): trajectory 15/15 scenarios with every step graded, 0 safety violations, intent /
+  author / action / approval / escalation accuracy 1.0, tool-call success 0.973, case latency p50/p95 1349.8/1911.6 ms
+  (end-to-end, not the loop alone); retrieval golden set of 19 cases in English/Hindi/Hinglish: recall@5 1.00, strict@5 1.00,
+  MRR 0.75 (removing the category prior drops Hinglish to 0.50); loop eval over 13 scenarios: MINT layers lift passing
+  scenarios 3/13 -> 13/13 at ~Rs 0.04 mean cost per run; triage-model comparison on labelled data (accuracy, macro-F1).
+  Repo: github.com/Harshaaalll/sanwaad. **Strongest AI-agents evidence outside work.**
+- **stt-tts-archive** [github.com/Harshaaalll/stt-tts-archive]: NOT a candidate project for the CV. The July 2026 voice-agent
+  bake-off in it (10 STT->LLM->TTS pipelines, prompt blocks, Fusion Finance persona) was authored by another account
+  (19 of 24 commits, 10-16 Jul 2026); the candidate's 5 commits are the Sanwaad seed (8-15 Sep 2026) and the README.
+  Never claim the bake-off as the candidate's work.
 - **Knowledge Graph RAG for Legal AI** [source: portfolio]: hybrid KG + RAG over 1,000 Indian Supreme Court cases using Neo4j, Vespa, InLegalBERT and Mistral with IRAC-style reasoning.
 - **Career Copilot 2.0** [source: portfolio/GitHub]: AI job-search system with 11 modules - FAISS-based job matching, response prediction, ATS optimisation; LangChain + Groq LLaMA 3. Repo: github.com/Harshaaalll/career-copilot
 - **Multilingual ASR System** [source: portfolio]: zero-shot Urdu speech recognition with Whisper plus an IndicBERT MLM corrector; 14% WER. Repo: github.com/Harshaaalll/multilingual-asr
