@@ -14,9 +14,20 @@ Actions (POST /api/action, JSON body {"action": ..., ...}):
   queue     {key}          add to the drafting queue for the next pipeline run
   unqueue   {key}
   run       {}             start the pipeline now (systemd user service)
+
+Phone / LAN access (the React Native app in mobile/) is opt-in: set JOB_DASHBOARD_HOST to a
+non-loopback address AND JOB_DASHBOARD_TOKEN (16+ chars). Every /api and /files request then
+needs `Authorization: Bearer <token>`; the server refuses to start on a non-loopback address
+without a token. With a token set the bundled web page cannot authenticate, so run a second
+localhost-only instance (no token) for the browser dashboard. Serve it over a private network
+(Tailscale / WireGuard); the token is sent in clear text over plain HTTP.
+
+  GET /api/detail?key=...   full posting text + skills for a freehire job (proxied from freehire.me)
 """
 import csv
 import datetime as dt
+import hmac
+import ipaddress
 import json
 import mimetypes
 import os
@@ -25,7 +36,8 @@ import subprocess
 import sys
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
-from urllib.parse import unquote, urlparse
+from urllib.parse import parse_qs, unquote, urlparse
+from urllib.request import Request, urlopen
 
 REPO = Path(__file__).resolve().parent.parent
 STATE = REPO / "job_scraper" / "seen_jobs.json"
@@ -36,6 +48,11 @@ FILE_ROOTS = [REPO / "cv", REPO / "cover_letters"]
 HEADER = ["date", "company", "sector", "role", "role_type", "channel", "status", "contact_person",
           "fit_rating", "notes", "cv_file", "cover_letter_file", "source", "deadline"]
 PORT = int(os.environ.get("JOB_DASHBOARD_PORT", "8787"))
+HOST = os.environ.get("JOB_DASHBOARD_HOST", "127.0.0.1")
+TOKEN = os.environ.get("JOB_DASHBOARD_TOKEN") or None
+MIN_TOKEN_LEN = 16
+FREEHIRE_API = os.environ.get("FREEHIRE_API_URL", "https://freehire.me")
+SLUG = re.compile(r"^[a-z0-9][a-z0-9-]{0,200}$")
 
 
 def load_json(path, default):
@@ -76,6 +93,39 @@ def norm(s):
 
 def csv_safe(s):
     return re.sub(r"[,\n\r\"]+", " ", s or "").strip()
+
+
+def is_loopback(host):
+    try:
+        return ipaddress.ip_address(host).is_loopback
+    except ValueError:
+        return host == "localhost"
+
+
+def authorized(header, token):
+    """True when no token is configured, or `header` is exactly `Bearer <token>` (constant-time compare)."""
+    if token is None:
+        return True
+    prefix = "Bearer "
+    return bool(header) and header.startswith(prefix) and hmac.compare_digest(header[len(prefix):], token)
+
+
+def job_detail(key):
+    """Full posting text for a freehire job, proxied from freehire.me by the stored slug."""
+    e = load_json(STATE, {"seen": {}}).get("seen", {}).get(key)
+    if not e:
+        raise KeyError(key)
+    slug = e.get("slug")
+    if not slug or not SLUG.match(slug):
+        return {"description": None, "skills": e.get("skills") or [], "note": "no freehire slug for this job"}
+    req = Request(f"{FREEHIRE_API}/api/v1/jobs/{slug}", headers={"User-Agent": "ai-job-search-dashboard"})
+    with urlopen(req, timeout=10) as resp:
+        data = json.load(resp).get("data") or {}
+    text = re.sub(r"<(?:br|/p|/li|/h\d)\s*/?>", "\n", data.get("description") or "")
+    text = re.sub(r"<[^>]+>", "", text)
+    text = text.replace("&nbsp;", " ").replace("&amp;", "&").replace("&lt;", "<").replace("&gt;", ">")
+    return {"description": re.sub(r"\n{3,}", "\n\n", text).strip() or None,
+            "skills": data.get("skills") or e.get("skills") or []}
 
 
 def systemd_next_run():
@@ -200,10 +250,26 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(data)
 
+    def deny_unauthorized(self):
+        if authorized(self.headers.get("Authorization"), TOKEN):
+            return False
+        self.send(401, {"error": "unauthorized"})
+        return True
+
     def do_GET(self):
-        path = urlparse(self.path).path
+        parsed = urlparse(self.path)
+        path = parsed.path
         if path in ("/", "/index.html"):
             return self.send(200, INDEX.read_bytes(), "text/html; charset=utf-8")
+        if path.startswith(("/api/", "/files/")) and self.deny_unauthorized():
+            return
+        if path == "/api/detail":
+            try:
+                return self.send(200, job_detail((parse_qs(parsed.query).get("key") or [""])[0]))
+            except KeyError:
+                return self.send(404, {"error": "unknown job"})
+            except Exception as e:
+                return self.send(502, {"error": f"detail lookup failed: {str(e)[:200]}"})
         if path == "/api/state":
             return self.send(200, build_state())
         if path.startswith("/files/"):
@@ -217,6 +283,8 @@ class Handler(BaseHTTPRequestHandler):
         self.send(404, {"error": "not found"})
 
     def do_POST(self):
+        if self.deny_unauthorized():
+            return
         # Custom header = cheap CSRF guard: other sites can't set it without a CORS preflight we never answer.
         if self.headers.get("X-Job-Dashboard") != "1" or urlparse(self.path).path != "/api/action":
             return self.send(403, {"error": "forbidden"})
@@ -242,8 +310,10 @@ class Handler(BaseHTTPRequestHandler):
 
 
 def main():
-    srv = ThreadingHTTPServer(("127.0.0.1", PORT), Handler)
-    print(f"Job dashboard on http://127.0.0.1:{PORT}", flush=True)
+    if not is_loopback(HOST) and (TOKEN is None or len(TOKEN) < MIN_TOKEN_LEN):
+        sys.exit(f"refusing to bind {HOST}: set JOB_DASHBOARD_TOKEN to a secret of {MIN_TOKEN_LEN}+ characters")
+    srv = ThreadingHTTPServer((HOST, PORT), Handler)
+    print(f"Job dashboard on http://{HOST}:{PORT}" + (" (token required)" if TOKEN else ""), flush=True)
     srv.serve_forever()
 
 

@@ -1,0 +1,14 @@
+{
+  "expo": {
+    "name": "AI Job Search",
+    "slug": "ai-job-search-mobile",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "aijobsearch",
+    "userInterfaceStyle": "automatic",
+    "plugins": ["expo-router", "expo-secure-store"],
+    "experiments": { "typedRoutes": true },
+    "ios": { "supportsTablet": false, "infoPlist": { "NSAppTransportSecurity": { "NSAllowsLocalNetworking": true } } },
+    "android": { "usesCleartextTraffic": true }
+  }
+}

@@ -209,6 +209,10 @@ def stage_scrape(cfg, status):
         exp, exp_why = experience_verdict(r.get("description"), r.get("seniority"))
         if r.get("source"):
             entry["ats"] = r["source"]  # the company's own ATS, e.g. greenhouse / lever / workday
+        if portal == "freehire-search":
+            # Facets the mobile app filters on, and the slug its detail screen looks up.
+            entry.update(slug=r.get("id"), work_mode=r.get("work_mode"), category=r.get("category"),
+                         seniority=r.get("seniority"), skills=(r.get("skills") or [])[:12])
         if exp == "stretch":
             entry["experience_note"] = exp_why
         if senior or abroad or exp == "reject" or in_tracker(entry, rows):

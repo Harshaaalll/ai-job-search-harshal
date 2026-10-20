@@ -129,3 +129,8 @@ company_research/*.json
 
 # Brainstorm mockups (superpowers visual companion) - never ship
 .superpowers/
+
+# React Native app
+mobile/node_modules/
+mobile/.expo/
+mobile/expo-env.d.ts
