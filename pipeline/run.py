@@ -30,6 +30,7 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO / "tools"))
+from job_filters import city_rank, experience_verdict  # noqa: E402
 from job_key import make_key  # noqa: E402
 
 STATE = REPO / "job_scraper" / "seen_jobs.json"
@@ -167,14 +168,24 @@ def stage_scrape(cfg, status):
         time.sleep(li.get("pause_seconds", 2))
 
     fh = cfg["freehire"]
+    limit = fh.get("limit", 50)
     for s in fh["searches"]:
-        args = [FREEHIRE_CLI, "search", "-q", s["query"], *s.get("args", []),
-                "--jobage", str(fh["jobage"]), "--limit", "25", "--no-description",
+        label = s.get("query") or f"{s.get('city', 'any city')} / {s.get('category', 'any category')}"
+        args = [FREEHIRE_CLI, "search", *(["-q", s["query"]] if s.get("query") else []),
+                *(["--city", s["city"]] if s.get("city") else []),
+                *(["--category", s["category"]] if s.get("category") else []),
+                *s.get("args", []), "--jobage", str(fh["jobage"]), "--limit", str(limit),
                 "--format", "json"]
-        try:
-            results += [("freehire-search", r) for r in run_cli(args)]
-        except Exception as e:
-            errors.append(f"freehire '{s['query']}': {e}")
+        # Descriptions stay on: the experience filter reads them. They are never stored.
+        for page in range(1, s.get("pages", 1) + 1):
+            try:
+                rows = run_cli([*args, "--page", str(page)])
+            except Exception as e:
+                errors.append(f"freehire '{label}' p{page}: {e}")
+                break
+            results += [("freehire-search", r) for r in rows]
+            if len(rows) < limit:
+                break
 
     state = load_json(STATE, {"seen": {}})
     seen = state["seen"]
@@ -195,9 +206,15 @@ def stage_scrape(cfg, status):
                  "deadline": None, "portal": portal, "source": "cli"}
         senior = ex.search(title) and not allow.search(title)
         abroad = loc and not india.search(loc)
-        if senior or abroad or in_tracker(entry, rows):
+        exp, exp_why = experience_verdict(r.get("description"), r.get("seniority"))
+        if r.get("source"):
+            entry["ats"] = r["source"]  # the company's own ATS, e.g. greenhouse / lever / workday
+        if exp == "stretch":
+            entry["experience_note"] = exp_why
+        if senior or abroad or exp == "reject" or in_tracker(entry, rows):
             entry.update(fit="low", status="skipped",
-                         skip_reason="senior title" if senior else "outside India" if abroad else "in tracker")
+                         skip_reason="senior title" if senior else "outside India" if abroad
+                         else exp_why if exp == "reject" else "in tracker")
             filtered += 1
         else:
             entry.update(fit="high" if core.search(title) else "medium", status="new")
@@ -261,7 +278,8 @@ def stage_select(cfg, status):
                      and (v.get("rank_score") or 0) >= cfg["min_rank_score_to_draft"]
                      and v.get("location_verdict", "PASS") != "FAIL"
                      and v.get("language_gate", "PASS") != "FAIL"),
-                    key=lambda k: -(open_[k].get("rank_score") or 0))
+                    key=lambda k: (-(open_[k].get("rank_score") or 0),
+                                   city_rank(open_[k].get("location"), cfg.get("city_priority", []))))
     picked = (manual + ranked)[: cfg["drafts_per_day"]]
     for k in picked:
         seen[k]["pipeline_state"] = "selected"

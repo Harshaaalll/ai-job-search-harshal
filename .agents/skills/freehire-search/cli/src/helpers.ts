@@ -130,7 +130,13 @@ export interface JobResult {
   work_mode: string | null
   regions: string[]
   countries: string[]
+  cities: string[]
   skills: string[]
+  // The ATS the posting was crawled from (greenhouse, lever, workday, ...), and the
+  // enrichment facets /scrape-style callers filter on. Null when unenriched.
+  source: string | null
+  seniority: string | null
+  category: string | null
   description: string | null
 }
 
@@ -157,7 +163,11 @@ export function toResult(j: FreehireJob): JobResult {
     work_mode: j.work_mode || null,
     regions: j.regions,
     countries: j.countries,
+    cities: j.cities ?? [],
     skills: j.skills,
+    source: j.source || null,
+    seniority: j.enrichment?.seniority || null,
+    category: j.enrichment?.category || null,
     description: j.description || null,
   }
 }

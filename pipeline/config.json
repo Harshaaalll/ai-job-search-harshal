@@ -78,50 +78,29 @@
       }
     ]
   },
+  "city_priority": ["bengaluru|bangalore", "hyderabad", "pune", "gurugram|gurgaon"],
   "freehire": {
+    "_comment": "Postings crawled from companies' own ATS/careers pages. One search per city group x (category sweep + keyword queries); the category facet misses unenriched postings, hence the keywords. Experience (<=2 yrs) is filtered in tools/job_filters.py.",
     "jobage": 7,
+    "limit": 50,
     "searches": [
-      {
-        "query": "LLM",
-        "args": [
-          "--country",
-          "IN",
-          "--category",
-          "ml_ai"
-        ]
-      },
-      {
-        "query": "generative AI",
-        "args": [
-          "--country",
-          "IN"
-        ]
-      },
-      {
-        "query": "machine learning",
-        "args": [
-          "--country",
-          "IN",
-          "--seniority",
-          "junior"
-        ]
-      },
-      {
-        "query": "data scientist",
-        "args": [
-          "--country",
-          "IN"
-        ]
-      },
-      {
-        "query": "AI engineer",
-        "args": [
-          "--country",
-          "IN",
-          "--facet",
-          "salary_min=1000000"
-        ]
-      }
+      {"city": "Bengaluru,Bangalore", "category": "ml_ai,ai_engineering,data_science", "pages": 3},
+      {"city": "Bengaluru,Bangalore", "query": "machine learning", "pages": 2},
+      {"city": "Bengaluru,Bangalore", "query": "data scientist", "pages": 2},
+      {"city": "Bengaluru,Bangalore", "query": "generative AI", "pages": 2},
+      {"city": "Bengaluru,Bangalore", "query": "LLM", "pages": 2},
+      {"city": "Hyderabad", "category": "ml_ai,ai_engineering,data_science", "pages": 2},
+      {"city": "Hyderabad", "query": "machine learning"},
+      {"city": "Hyderabad", "query": "data scientist"},
+      {"city": "Hyderabad", "query": "generative AI"},
+      {"city": "Pune", "category": "ml_ai,ai_engineering,data_science", "pages": 2},
+      {"city": "Pune", "query": "machine learning"},
+      {"city": "Pune", "query": "data scientist"},
+      {"city": "Pune", "query": "generative AI"},
+      {"city": "Gurugram,Gurgaon", "category": "ml_ai,ai_engineering,data_science", "pages": 2},
+      {"city": "Gurugram,Gurgaon", "query": "machine learning"},
+      {"city": "Gurugram,Gurgaon", "query": "data scientist"},
+      {"city": "Gurugram,Gurgaon", "query": "generative AI"}
     ]
   },
   "exclude_title_regex": "\\b(senior|sr\\.?|lead|staff|principal|manager|director|head|architect|vp|vice president|avp|intern|internship)\\b|\\b(ii|iii|iv|3|4|5)\\s*$|engineer\\s+(ii|iii|iv)\\b|scientist\\s+(ii|iii|iv)\\b",

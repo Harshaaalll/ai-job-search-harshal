@@ -164,7 +164,10 @@ bun run .agents/skills/freehire-search/cli/src/cli.ts detail golang-zensar-2bxu6
 
 Search JSON is `{ "meta": { "count", "page", "total" }, "results": [...] }`; each
 result carries at least `id` (the freehire slug), `title`, `company`, `location`,
-`date`, `url`, and `description` (missing values are `null`). `table` and `plain`
+`date`, `url`, and `description` (missing values are `null`). It also carries `source`
+(the company's ATS the posting was crawled from, e.g. `greenhouse`, `lever`, `workday`),
+`cities`, and the enrichment facets `seniority` and `category` (null when the posting is
+unenriched; enrichment is sparse and can be wrong, so treat it as a hint). `table` and `plain`
 omit the description — it would swamp a scannable list. All errors are written to
 **stderr** as `{ "error": "...", "code": "..." }` and the process exits with code `1`.
 

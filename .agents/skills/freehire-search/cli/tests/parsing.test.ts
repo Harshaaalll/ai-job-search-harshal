@@ -42,6 +42,20 @@ describe("toResult — reshape into the portal-skill contract", () => {
     });
   });
 
+  test("carries the source ATS, cities and enrichment facets for callers that filter", () => {
+    const r = toResult(job({ enrichment: { seniority: "junior", category: "ml_ai" } }));
+    expect(r.source).toBe("greenhouse");
+    expect(r.cities).toEqual(["Berlin"]);
+    expect(r.seniority).toBe("junior");
+    expect(r.category).toBe("ml_ai");
+  });
+
+  test("unenriched jobs give null seniority and category", () => {
+    const r = toResult(job());
+    expect(r.seniority).toBeNull();
+    expect(r.category).toBeNull();
+  });
+
   test("missing values are null, not omitted", () => {
     const r = toResult(job({ company: "", location: "", posted_at: null, work_mode: undefined }));
     expect(r.company).toBeNull();
