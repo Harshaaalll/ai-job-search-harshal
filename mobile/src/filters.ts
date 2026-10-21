@@ -165,6 +165,16 @@ export function atsOptions(jobs: Job[]): string[] {
   return [...new Set(jobs.map((j) => j.ats).filter((a): a is string => !!a))].sort();
 }
 
+/** The /rank fit bands from 04-job-evaluation.md. */
+export function scoreBand(score: number | null | undefined): string {
+  if (score == null) return "Unscored";
+  if (score >= 75) return "Strong";
+  if (score >= 60) return "Good";
+  if (score >= 45) return "Moderate";
+  if (score >= 30) return "Weak";
+  return "Poor";
+}
+
 export function scoreTone(score: number | null | undefined): "good" | "warn" | "bad" | "none" {
   if (score == null) return "none";
   if (score >= 75) return "good";

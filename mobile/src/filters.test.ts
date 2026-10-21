@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { DEFAULT_FILTERS, activeFilterCount, applyFilters, bucketize, cityOf } from "./filters.ts";
+import { DEFAULT_FILTERS, activeFilterCount, applyFilters, bucketize, cityOf, scoreBand } from "./filters.ts";
 import type { Job, TrackerRow } from "./types.ts";
 
 const NOW = Date.parse("2026-10-20T00:00:00Z");
@@ -94,4 +94,10 @@ test("bucketize mirrors the web dashboard", () => {
   assert.equal(b.ready.length, 1);
   assert.equal(b.ready[0].job?.key, "drafted");
   assert.equal(b.applied.length, 1);
+});
+
+test("score bands follow the /rank thresholds", () => {
+  assert.deepEqual([80, 75, 74, 60, 59, 45, 44, 30, 29].map(scoreBand),
+    ["Strong", "Strong", "Good", "Good", "Moderate", "Moderate", "Weak", "Weak", "Poor"]);
+  assert.equal(scoreBand(null), "Unscored");
 });

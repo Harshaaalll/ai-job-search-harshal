@@ -6,9 +6,9 @@ and the application tracker.
 
 | Screen | What it does |
 |---|---|
-| **Pipeline** | Top picks / Ready / Queue / New / Hidden. Search, filter sheet, sort. Queue a draft, dismiss (with undo), mark applied, run the pipeline now. Pipeline status and next run at the top. |
-| **Job detail** | Fit score, strengths and gaps, chips (city, work mode, ATS, experience note), full posting text, skills, link to the company's own posting, linked tracker row and PDFs. |
-| **Tracker** | Every tracked application, filter by status, open the CV / cover letter PDF. |
+| **Pipeline** | Top picks / Ready / Queue / New / Hidden. Each card shows the fit score and band (Strong 75+, Good 60+, ...), the ranker's top strength and gap, and only the flags that need attention. Swipe right to queue a draft, left to dismiss (with undo); search, filter sheet, sort, run the pipeline now. |
+| **Job detail** | Fit meter with the Good / Strong thresholds, every strength and gap, an eligibility checklist (experience, seniority, location, language), the linked tracker row, skills, collapsible posting text. Actions stay in a bar at the bottom. |
+| **Tracker** | Funnel strip (drafted, applied, interview, offer, closed). Open / Follow up / Closed / All views. Cards show days quiet and follow-ups sent; tap one to set its status (the `/outcome` vocabulary), add a note or log a follow-up. The tab is badged with follow-ups due (10+ quiet days, fewer than two follow-ups, as `/outcome` counts them). |
 | **Settings** | Server address and token (stored in the device's secure storage), connection test. |
 
 **Filters** (saved on the device): keyword, city (Bengaluru, Hyderabad, Pune, Gurugram, Other), domain
@@ -45,12 +45,15 @@ Then open **Settings**, enter `<server-ip>:8787` and the token, tap **Test**, th
 
 ```bash
 npm run typecheck          # tsc --noEmit
-npm test                   # filter / bucket logic (Node 22.6+)
+npm test                   # filter / bucket / tracker logic (Node 22.6+)
 ```
 
 ## Notes
 
 - Dismiss / queue / applied / run use the same actions as the web dashboard, so both stay in sync.
+- Status changes write `job_search_tracker.csv` the way `/outcome` does: canonical status spellings only, a
+  dated note (`interview 2026-10-22 - ...`), and a row leaving `drafted` takes today as its sent date.
+  Follow-ups append `followed up YYYY-MM-DD`, which `/outcome` counts.
 - "Run now" needs the server host to have the `ai-job-pipeline` systemd user service (Linux).
 - Full job text is fetched on demand by the server from freehire.me using the job's stored slug;
   jobs from other sources show the stored fields and a link to the posting.

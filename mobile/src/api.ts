@@ -1,5 +1,6 @@
 import * as FileSystem from "expo-file-system";
-import type { DashboardState, JobAction, JobDetail } from "./types";
+import type { Status } from "./tracker";
+import type { DashboardState, JobAction, JobDetail, TrackerRow } from "./types";
 
 export class ApiError extends Error {
   constructor(message: string, public status: number) {
@@ -68,6 +69,21 @@ export function createApi({ baseUrl, token }: Connection) {
         method: "POST",
         headers: headers({ "Content-Type": "application/json", "X-Job-Dashboard": "1" }),
         body: JSON.stringify({ action: "applied_row", company, role }),
+      }),
+
+    /** Set a tracker row's status (/outcome vocabulary); the row is identified by company + role + date. */
+    setRowStatus: (row: TrackerRow, status: Status, note = "") =>
+      request<{ ok: true }>("/api/action", {
+        method: "POST",
+        headers: headers({ "Content-Type": "application/json", "X-Job-Dashboard": "1" }),
+        body: JSON.stringify({ action: "status_row", company: row.company, role: row.role, date: row.date, status, note }),
+      }),
+
+    logFollowUp: (row: TrackerRow) =>
+      request<{ ok: true }>("/api/action", {
+        method: "POST",
+        headers: headers({ "Content-Type": "application/json", "X-Job-Dashboard": "1" }),
+        body: JSON.stringify({ action: "followup_row", company: row.company, role: row.role, date: row.date }),
       }),
 
     /** Download a CV / cover letter PDF with the bearer token and return a local file URI. */

@@ -7,6 +7,8 @@ current state. Standard library only. Binds to localhost.
 
 Actions (POST /api/action, JSON body {"action": ..., ...}):
   applied_row {company, role}  same, for a tracker row with no matching scraped job
+  status_row {company, role, date, status, note?}  set a tracker row's status (/outcome vocabulary)
+  followup_row {company, role, date}  log a `followed up YYYY-MM-DD` note on a tracker row
   applied   {key}          you submitted it: tracker row -> status `applied`
                            (the /apply `drafted` row is updated, or a new row is added)
   dismiss   {key}          hide a job from the lists
@@ -53,6 +55,8 @@ TOKEN = os.environ.get("JOB_DASHBOARD_TOKEN") or None
 MIN_TOKEN_LEN = 16
 FREEHIRE_API = os.environ.get("FREEHIRE_API_URL", "https://freehire.me")
 SLUG = re.compile(r"^[a-z0-9][a-z0-9-]{0,200}$")
+# /outcome's "Tracker status vocabulary": the only spellings ever written.
+STATUSES = ("drafted", "applied", "interview", "offer", "hired", "rejected", "no_response", "offer_declined", "withdrawn")
 
 
 def load_json(path, default):
@@ -217,6 +221,42 @@ def mark_row_applied(company, role):
     write_tracker(fields, rows)
 
 
+def find_row(rows, company, role, date):
+    """The tracker row the app showed: company + role + date, latest wins (duplicates are possible)."""
+    match = [r for r in rows if norm(r.get("company")) == norm(company)
+             and norm(r.get("role")) == norm(role) and (r.get("date") or "") == (date or "")]
+    if not match:
+        raise KeyError(f"{company} / {role}")
+    return match[-1]
+
+
+def append_note(row, text):
+    row["notes"] = f"{row['notes']}; {text}" if row.get("notes") else text
+
+
+def set_row_status(company, role, date, status, note=""):
+    """Advance a tracker row like /outcome Step 4: canonical status, dated note, and a row
+    leaving `drafted` takes today as its submission date."""
+    if status not in STATUSES:
+        raise ValueError(f"unknown status {status!r}")
+    fields, rows = read_tracker()
+    r = find_row(rows, company, role, date)
+    today = dt.date.today().isoformat()
+    if r.get("status") == "drafted" and status != "drafted":
+        r["date"] = today
+    r["status"] = status
+    note = " ".join(csv_safe(note).split())
+    append_note(r, f"{status} {today}" + (f" - {note}" if note else ""))
+    write_tracker(fields, rows)
+
+
+def log_followup(company, role, date):
+    """Append the `followed up YYYY-MM-DD` marker /outcome counts follow-ups by."""
+    fields, rows = read_tracker()
+    append_note(find_row(rows, company, role, date), f"followed up {dt.date.today().isoformat()}")
+    write_tracker(fields, rows)
+
+
 def update_entry(key, action):
     state = load_json(STATE, {"seen": {}})
     e = state["seen"].get(key)
@@ -295,6 +335,10 @@ class Handler(BaseHTTPRequestHandler):
                 mark_applied(body["key"])
             elif action == "applied_row":
                 mark_row_applied(body["company"], body["role"])
+            elif action == "status_row":
+                set_row_status(body["company"], body["role"], body.get("date", ""), body["status"], body.get("note") or "")
+            elif action == "followup_row":
+                log_followup(body["company"], body["role"], body.get("date", ""))
             elif action in ("dismiss", "restore", "queue", "unqueue"):
                 update_entry(body["key"], action)
             elif action == "run":
@@ -305,6 +349,8 @@ class Handler(BaseHTTPRequestHandler):
             self.send(200, {"ok": True})
         except KeyError as e:
             self.send(404, {"error": f"unknown job {e}"})
+        except ValueError as e:
+            self.send(400, {"error": str(e)[:300]})
         except Exception as e:
             self.send(500, {"error": str(e)[:300]})
 

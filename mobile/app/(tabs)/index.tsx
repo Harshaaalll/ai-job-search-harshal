@@ -1,3 +1,4 @@
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { useRouter } from "expo-router";
 import React, { useMemo, useState } from "react";
 import { ActivityIndicator, Alert, FlatList, RefreshControl, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
@@ -86,13 +87,21 @@ export default function PipelineScreen() {
 
   const filterCount = activeFilterCount(filters);
   const running = !!state.status?.running;
+  const failed = !running && state.status?.ok === false;
 
   const header = (
     <View style={{ gap: space.md, padding: space.lg, paddingBottom: space.sm }}>
       <Card style={s.statusRow}>
+        <View style={[s.statusIcon, { backgroundColor: running ? t.warnSoft : failed ? t.badSoft : t.goodSoft }]}>
+          {running ? (
+            <ActivityIndicator size="small" color={t.warn} />
+          ) : (
+            <Ionicons name={failed ? "warning" : "checkmark-circle"} size={20} color={failed ? t.bad : t.good} />
+          )}
+        </View>
         <View style={{ flex: 1 }}>
-          <Text style={{ color: running ? t.warn : t.ink, fontWeight: "600" }}>{running ? "Pipeline running" : "Pipeline"}</Text>
-          <Text style={{ color: t.muted, fontSize: 13 }}>{describeStatus(state.status, state.next_run)}</Text>
+          <Text style={{ color: t.ink, fontWeight: "700" }}>{running ? "Pipeline running" : failed ? "Last run failed" : "Pipeline idle"}</Text>
+          <Text style={{ color: t.muted, fontSize: 12 }} numberOfLines={2}>{describeStatus(state.status, state.next_run)}</Text>
         </View>
         <Button kind="primary" label={running ? "Running…" : "Run now"} disabled={running} onPress={runPipeline} />
       </Card>
@@ -117,6 +126,11 @@ export default function PipelineScreen() {
           <Toggle key={id} label={`${label} ${counts[id]}`} selected={bucket === id} onPress={() => setBucket(id)} />
         ))}
       </ScrollView>
+      {bucket !== "ready" && jobs.length ? (
+        <Text style={{ color: t.muted, fontSize: 12 }}>
+          {bucket === "hidden" ? "Swipe left to restore · tap for details" : "Swipe right to queue a draft, left to dismiss · tap for details"}
+        </Text>
+      ) : null}
     </View>
   );
 
@@ -191,7 +205,8 @@ export default function PipelineScreen() {
 }
 
 const s = StyleSheet.create({
-  statusRow: { flexDirection: "row", alignItems: "center", gap: space.md },
+  statusRow: { flexDirection: "row", alignItems: "center", gap: space.md, paddingVertical: space.md },
+  statusIcon: { width: 36, height: 36, borderRadius: 18, alignItems: "center", justifyContent: "center" },
   searchRow: { flexDirection: "row", gap: space.sm, alignItems: "center" },
   search: { flex: 1, borderWidth: 1, borderRadius: 10, paddingHorizontal: space.md, minHeight: 40, fontSize: 15 },
 });
